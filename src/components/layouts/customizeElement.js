@@ -1,28 +1,40 @@
-// app/customize/CustomizeElement.js
 "use client";
 
 import { useState, useEffect } from "react";
 
 export default function CustomizeElement({
   onSelectWrap,
-  selectedWrap,
-  onSelectFlower,
+  onAddFlower,
+  onRemoveFlower,
+  onSelectRibbon,
+  onSelectDecoration,
 }) {
   const [wrapStyles, setWrapStyles] = useState([]);
   const [flowers, setFlowers] = useState([]);
+  const [ribbons, setRibbons] = useState([]);
+  const [decorations, setDecorations] = useState([]);
 
   useEffect(() => {
-    const fetchWrapStyles = async () => {
+    const fetchData = async (type, setData) => {
       try {
-        const wrapData =
-          selectedWrap || JSON.parse(localStorage.getItem("selectedWrap"));
-        if (!wrapData || !wrapData.category_id || !wrapData.size_id) return;
+        const response = await fetch(`/api/elements?type=${type}`);
+        if (!response.ok) throw new Error(`Failed to fetch ${type}`);
+        const data = await response.json();
+        setData(data);
+      } catch (error) {
+        console.error(`Error fetching ${type}:`, error);
+      }
+    };
 
+    // Fetch wrap styles berdasarkan kategori dan ukuran yang dipilih
+    const fetchWrapStyles = async () => {
+      const wrapData = JSON.parse(localStorage.getItem("selectedWrap"));
+      if (!wrapData || !wrapData.category_id || !wrapData.size_id) return;
+
+      try {
         const response = await fetch(
           `/api/wrapStyle?category_id=${wrapData.category_id}&size_id=${wrapData.size_id}`
         );
-        if (!response.ok) throw new Error("Gagal mengambil data wrap styles");
-
         const data = await response.json();
         setWrapStyles(data);
       } catch (error) {
@@ -30,21 +42,11 @@ export default function CustomizeElement({
       }
     };
 
-    const fetchFlowers = async () => {
-      try {
-        const response = await fetch("/api/flowers");
-        if (!response.ok) throw new Error("Gagal mengambil data bunga");
-
-        const data = await response.json();
-        setFlowers(data);
-      } catch (error) {
-        console.error("Error fetching flowers:", error);
-      }
-    };
-
     fetchWrapStyles();
-    fetchFlowers();
-  }, [selectedWrap]);
+    fetchData("flower", setFlowers);
+    fetchData("ribbon", setRibbons);
+    fetchData("decoration", setDecorations);
+  }, []);
 
   return (
     <div className="w-1/2 border-r border-gray-300 pr-4">
@@ -53,43 +55,62 @@ export default function CustomizeElement({
         {wrapStyles.map((wrap) => (
           <div
             key={wrap.wrap_id}
-            className={`p-2 border rounded-md ${
-              selectedWrap?.wrap_id === wrap.wrap_id
-                ? "border-blue-500"
-                : "border-gray-300"
-            }`}
             onClick={() => onSelectWrap(wrap)}
+            className="p-2 border rounded-md cursor-pointer"
           >
             <img
               src={wrap.wrap_image || "/images/placeholder.jpg"}
-              className="h-20 w-20 object-cover cursor-pointer"
-              alt={wrap.wrap_name}
+              className="h-20 w-20 object-cover"
             />
           </div>
         ))}
       </div>
 
-      <h3 className="text-lg font-semibold mt-8 mb-4">Pilih Bunga</h3>
-      <div className="flex flex-wrap gap-4 justify-start">
+      <h3 className="text-lg font-semibold mt-6">Pilih Bunga</h3>
+      <div className="flex flex-wrap gap-4">
         {flowers.map((flower) => (
-          <div key={flower.flower_id} className="flex flex-col items-center">
-            <h4 className="text-sm font-medium">{flower.flower_name}</h4>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {flower.colors.map((color) => (
-                <div
-                  key={color.color_id}
-                  className="p-2 border rounded-md"
-                  onClick={() => onSelectFlower(color)}
-                >
-                  <img
-                    src={color.flower_image || "/images/placeholder.jpg"}
-                    alt={color.color_name}
-                    className="h-20 w-20 object-cover cursor-pointer"
-                  />
-                  <p className="text-xs text-center mt-1">{color.color_name}</p>
-                </div>
-              ))}
-            </div>
+          <div
+            key={flower.flower_id}
+            className="p-2 border rounded-md cursor-pointer"
+          >
+            <img
+              src={flower.flower_image || "/images/placeholder.jpg"}
+              className="h-16 w-16 object-cover"
+              alt={flower.flower_name}
+              onClick={() => onAddFlower(flower)}
+            />
+          </div>
+        ))}
+      </div>
+
+      <h3 className="text-lg font-semibold mt-6">Pilih Ribbon</h3>
+      <div className="flex flex-wrap gap-4">
+        {ribbons.map((ribbon) => (
+          <div
+            key={ribbon.ribbon_id}
+            onClick={() => onSelectRibbon(ribbon)}
+            className="p-2 border rounded-md cursor-pointer"
+          >
+            <img
+              src={ribbon.ribbon_image || "/images/placeholder.jpg"}
+              className="h-16 w-16 object-cover"
+            />
+          </div>
+        ))}
+      </div>
+
+      <h3 className="text-lg font-semibold mt-6">Pilih Dekorasi</h3>
+      <div className="flex flex-wrap gap-4">
+        {decorations.map((decoration) => (
+          <div
+            key={decoration.decoration_id}
+            onClick={() => onSelectDecoration(decoration)}
+            className="p-2 border rounded-md cursor-pointer"
+          >
+            <img
+              src={decoration.decoration_image || "/images/placeholder.jpg"}
+              className="h-16 w-16 object-cover"
+            />
           </div>
         ))}
       </div>

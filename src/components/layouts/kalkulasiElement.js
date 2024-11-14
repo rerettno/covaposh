@@ -1,69 +1,66 @@
-// app/customize/KalkulasiElement.js
 "use client";
 
-import { useEffect, useState } from "react";
+export default function KalkulasiElement({
+  selectedWrap,
+  selectedFlowers,
+  selectedRibbon,
+  selectedDecoration,
+}) {
+  // Fungsi untuk menghitung harga total
+  const calculateTotalPrice = () => {
+    let total = 0;
 
-export default function KalkulasiElement({ selectedWrap, selectedFlowers }) {
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [wrapPrice, setWrapPrice] = useState(0);
-  const [flowerPrices, setFlowerPrices] = useState([]);
+    // Tambahkan harga wrap style jika ada
+    total += parseFloat(selectedWrap?.wrap_price) || 0;
 
-  useEffect(() => {
-    // Mengambil harga wrap jika ada
-    const wrapCost = parseFloat(selectedWrap?.wrap_price || 0);
-    setWrapPrice(wrapCost);
+    // Tambahkan harga setiap bunga yang dipilih
+    selectedFlowers.forEach((flower) => {
+      total += parseFloat(flower.flower_price) || 0;
+    });
 
-    // Mengambil harga setiap bunga
-    const flowerCosts = selectedFlowers.map((flower) => ({
-      name: flower.color_name,
-      price: parseFloat(flower.flower_price || 0),
-    }));
-    setFlowerPrices(flowerCosts);
+    // Tambahkan harga ribbon jika ada
+    total += parseFloat(selectedRibbon?.ribbon_price) || 0;
 
-    // Menghitung total harga dari wrap dan bunga
-    const totalFlowerPrice = flowerCosts.reduce(
-      (sum, flower) => sum + flower.price,
-      0
-    );
-    const total = wrapCost + totalFlowerPrice;
-    setTotalPrice(total);
-  }, [selectedWrap, selectedFlowers]);
+    // Tambahkan harga decoration jika ada
+    total += parseFloat(selectedDecoration?.decoration_price) || 0;
+
+    return total.toFixed(2); // Menampilkan hasil sebagai angka desimal
+  };
 
   return (
-    <div className="w-full max-w-md mt-8">
-      <h3 className="text-lg font-semibold mb-4">Rincian Harga</h3>
+    <div className="w-full text-center mt-6">
+      <h3 className="text-lg font-semibold mb-4">Kalkulasi Harga</h3>
 
-      {/* Rincian Harga Wrap Style */}
-      <div className="mb-4">
-        <h4 className="text-md font-medium">Wrap Style</h4>
-        {selectedWrap ? (
+      {/* Rincian harga untuk setiap elemen yang dipilih */}
+      <div className="text-left mb-4">
+        {selectedWrap && (
           <p>
-            {selectedWrap.wrap_name}: {wrapPrice.toLocaleString()} IDR
+            Wrap Style: {selectedWrap.wrap_name} - {selectedWrap.wrap_price} IDR
           </p>
-        ) : (
-          <p>Belum ada wrap style yang dipilih</p>
+        )}
+        {selectedFlowers.map((flower, index) => (
+          <p key={index}>
+            Bunga: {flower.flower_name} - {flower.flower_price} IDR
+          </p>
+        ))}
+        {selectedRibbon && (
+          <p>
+            Ribbon: {selectedRibbon.ribbon_name} - {selectedRibbon.ribbon_price}{" "}
+            IDR
+          </p>
+        )}
+        {selectedDecoration && (
+          <p>
+            Decoration: {selectedDecoration.decoration_name} -{" "}
+            {selectedDecoration.decoration_price} IDR
+          </p>
         )}
       </div>
 
-      {/* Rincian Harga Bunga */}
-      <div className="mb-4">
-        <h4 className="text-md font-medium">Bunga</h4>
-        {flowerPrices.length > 0 ? (
-          flowerPrices.map((flower, index) => (
-            <p key={index}>
-              {flower.name}: {flower.price.toLocaleString()} IDR
-            </p>
-          ))
-        ) : (
-          <p>Belum ada bunga yang dipilih</p>
-        )}
-      </div>
-
-      {/* Total Keseluruhan */}
-      <div className="mt-6 border-t pt-4">
-        <h4 className="text-lg font-bold">Total Harga</h4>
-        <p className="text-xl font-bold">{totalPrice.toLocaleString()} IDR</p>
-      </div>
+      {/* Total harga keseluruhan */}
+      <p className="text-xl font-semibold">
+        Total Harga: {calculateTotalPrice()} IDR
+      </p>
     </div>
   );
 }
