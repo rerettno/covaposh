@@ -3,25 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-global: "PoltawskiNowy";
+  background-color: transparent;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-global);
+  font-weight: lighter;
+  @apply mx-2 sm:mx-4 lg:mx-8 xl:mx-16;
+  color: #2e3240;
+  background-color: #f4f5f9;
 }
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* styles.css */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Untuk Internet Explorer dan Edge */
+  scrollbar-width: none; /* Untuk Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Untuk Chrome, Safari, dan Opera */
 }
