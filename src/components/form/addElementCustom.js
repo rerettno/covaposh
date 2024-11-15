@@ -30,19 +30,14 @@ export default function AddElementCustom() {
   });
 
   useEffect(() => {
-    // Fungsi untuk mengambil data kategori, ukuran, dan bunga
     const fetchOptions = async () => {
       try {
-        const categoriesResponse = await fetch("/api/categories");
-        const categoriesData = await categoriesResponse.json();
+        const [categoriesData, sizesData, flowersData] = await Promise.all([
+          fetch("/api/categories").then((res) => res.json()),
+          fetch("/api/sizes").then((res) => res.json()),
+          fetch("/api/flowers").then((res) => res.json()),
+        ]);
 
-        const sizesResponse = await fetch("/api/sizes");
-        const sizesData = await sizesResponse.json();
-
-        const flowersResponse = await fetch("/api/flowers");
-        const flowersData = await flowersResponse.json();
-
-        // Set data untuk dropdown
         setOptions({
           categories: categoriesData,
           sizes: sizesData,

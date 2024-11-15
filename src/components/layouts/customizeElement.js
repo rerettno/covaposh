@@ -17,7 +17,7 @@ export default function CustomizeElement({
   useEffect(() => {
     const fetchData = async (type, setData) => {
       try {
-        const response = await fetch(`/api/elements?type=${type}`);
+        const response = await fetch(`/api/getElementsCustom?type=${type}`);
         if (!response.ok) throw new Error(`Failed to fetch ${type}`);
         const data = await response.json();
         setData(data);
