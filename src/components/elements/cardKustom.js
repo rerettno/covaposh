@@ -14,21 +14,26 @@ export default function CardKustom() {
   useEffect(() => {
     const fetchCategoriesWithWrapStyles = async () => {
       try {
-        const response = await fetch("/api/categories?withWrapStyle=true");
+        const response = await fetch(
+          "/api/selectedType?selectedType=category&withWrapStyle=true"
+        );
         const data = await response.json();
         setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
+
     fetchCategoriesWithWrapStyles();
   }, []);
 
-  // Fetch ukuran berdasarkan kategori yang dipilih
+  // Fetch ukuran berdasarkan kategori dengan wrap style
   const handleCategorySelect = async (categoryId) => {
     setSelectedCategory(categoryId);
     try {
-      const response = await fetch(`/api/sizes?category_id=${categoryId}`);
+      const response = await fetch(
+        `/api/selectedType?selectedType=size&category_id=${categoryId}`
+      );
       const data = await response.json();
       setSizes(data);
     } catch (error) {
@@ -36,7 +41,7 @@ export default function CardKustom() {
     }
   };
 
-  // Fetch wrap styles berdasarkan kategori dan ukuran yang dipilih
+  // Fetch wrap styles berdasarkan kategori dan ukuran
   const handleSizeSelect = async (sizeId) => {
     setSelectedSize(sizeId);
     try {
@@ -50,19 +55,15 @@ export default function CardKustom() {
     }
   };
 
-  // Fungsi untuk memilih wrap style dan navigasi ke `customizePage`
+  // Fungsi untuk memilih wrap style dan navigasi ke halaman customize
   const handleWrapSelect = (wrap) => {
-    // Gabungkan wrap data dengan category_id dan size_id
     const wrapData = {
       ...wrap,
       category_id: selectedCategory,
       size_id: selectedSize,
     };
 
-    // Simpan data wrap style yang dipilih di localStorage
     localStorage.setItem("selectedWrap", JSON.stringify(wrapData));
-
-    // Navigasi ke halaman customize
     router.push("/customize");
   };
 

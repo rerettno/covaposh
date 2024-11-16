@@ -15,10 +15,11 @@ export default function Home() {
       <div className="produk text-darkBlue">Koleksi Terbaru</div>
       <NewProduct />
       <AddProduct />
+
+      <AddCategoryOrSizeForm />
       <div>
         <Footer type="map" />
       </div>
-      <AddCategoryOrSizeForm />
     </div>
   );
 }

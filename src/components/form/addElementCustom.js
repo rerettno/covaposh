@@ -33,9 +33,13 @@ export default function AddElementCustom() {
     const fetchOptions = async () => {
       try {
         const [categoriesData, sizesData, flowersData] = await Promise.all([
-          fetch("/api/categories").then((res) => res.json()),
-          fetch("/api/sizes").then((res) => res.json()),
-          fetch("/api/flowers").then((res) => res.json()),
+          fetch("/api/selectedType?selectedType=category").then((res) =>
+            res.json()
+          ),
+          fetch("/api/selectedType?selectedType=size").then((res) =>
+            res.json()
+          ),
+          fetch("/api/flowers").then((res) => res.json()), // Anda dapat mengganti endpoint ini jika perlu
         ]);
 
         setOptions({
@@ -81,14 +85,16 @@ export default function AddElementCustom() {
     }
 
     const data = new FormData();
-    data.append("category", selectedCategory);
+    data.append("selectedType", selectedCategory);
 
     Object.entries(formData).forEach(([key, value]) => {
-      data.append(key, value);
+      if (value !== null && value !== "") {
+        data.append(key, value);
+      }
     });
 
     try {
-      const response = await fetch("/api/addElementsCustom", {
+      const response = await fetch("/api/selectedType", {
         method: "POST",
         body: data,
       });
@@ -98,7 +104,8 @@ export default function AddElementCustom() {
         setFormData({});
         setSelectedCategory("");
       } else {
-        alert("Gagal menambahkan data.");
+        const errorData = await response.json();
+        alert(`Gagal menambahkan data: ${errorData.error || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -296,7 +303,7 @@ export default function AddElementCustom() {
 
         <button
           type="submit"
-          className="w-full bg-blue text-black py-2 rounded "
+          className="w-full bg-blue text-black py-2 rounded hover:bg-blue-600"
         >
           Submit
         </button>

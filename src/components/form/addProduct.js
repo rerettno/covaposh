@@ -4,46 +4,61 @@ import { useState, useEffect } from "react";
 export default function AddProduct() {
   const [productName, setProductName] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [sizeId, setSizeId] = useState(""); // Tambahkan state untuk size_id
+  const [sizeId, setSizeId] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [productImage, setProductImage] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [sizes, setSizes] = useState([]); // State untuk data ukuran
+  const [sizes, setSizes] = useState([]);
+  const [filteredSizes, setFilteredSizes] = useState([]); // Ukuran sesuai kategori
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    // Mengambil kategori dan ukuran untuk dropdown
-    const fetchCategories = async () => {
+    // Fetch kategori dan ukuran menggunakan `selectedType`
+    const fetchData = async () => {
       try {
-        const response = await fetch("/api/categories");
-        const data = await response.json();
-        setCategories(data);
+        // Fetch categories
+        const categoriesResponse = await fetch(
+          "/api/selectedType?selectedType=category"
+        );
+        if (!categoriesResponse.ok)
+          throw new Error("Failed to fetch categories");
+        const categoriesData = await categoriesResponse.json();
+
+        // Fetch all sizes
+        const sizesResponse = await fetch(
+          "/api/selectedType?selectedType=size"
+        );
+        if (!sizesResponse.ok) throw new Error("Failed to fetch sizes");
+        const sizesData = await sizesResponse.json();
+
+        // Set data ke state
+        setCategories(categoriesData);
+        setSizes(sizesData);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    const fetchSizes = async () => {
-      try {
-        const response = await fetch("/api/sizes"); // Pastikan endpoint ini benar
-        if (!response.ok) throw new Error("Failed to fetch sizes");
-        const data = await response.json();
-        setSizes(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchCategories();
-    fetchSizes();
+    fetchData();
   }, []);
+
+  const handleCategoryChange = (categoryId) => {
+    setCategoryId(categoryId);
+    setSizeId(""); // Reset ukuran ketika kategori berubah
+
+    // Filter ukuran berdasarkan kategori yang dipilih
+    const filtered = sizes.filter(
+      (size) => size.category_id === categoryId || !size.category_id
+    );
+    setFilteredSizes(filtered);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!productName || !categoryId || !price || !sizeId) {
-      setMessage("Please provide product name, category, price, and size.");
+    if (!productName || !categoryId || !sizeId || !price) {
+      setMessage("Please provide all required fields.");
       return;
     }
 
@@ -63,6 +78,7 @@ export default function AddProduct() {
         body: formData,
       });
       const data = await response.json();
+
       if (response.ok) {
         setMessage("Product successfully added!");
         setProductName("");
@@ -75,7 +91,7 @@ export default function AddProduct() {
         setMessage(data.error || "Failed to add product.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error submitting product:", error);
       setMessage("An error occurred. Please try again.");
     }
   };
@@ -98,7 +114,7 @@ export default function AddProduct() {
           <label className="block text-sm font-medium mb-2">Category</label>
           <select
             value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            onChange={(e) => handleCategoryChange(e.target.value)}
             className="w-full p-2 border rounded"
           >
             <option value="">Select Category</option>
@@ -115,11 +131,12 @@ export default function AddProduct() {
             value={sizeId}
             onChange={(e) => setSizeId(e.target.value)}
             className="w-full p-2 border rounded"
+            disabled={!categoryId} // Nonaktifkan dropdown jika kategori belum dipilih
           >
             <option value="">Select Size</option>
-            {sizes.map((size) => (
+            {filteredSizes.map((size) => (
               <option key={size.size_id} value={size.size_id}>
-                {size.size_name}
+                {size.size_name} (Max Flowers: {size.flower_count || "N/A"})
               </option>
             ))}
           </select>
