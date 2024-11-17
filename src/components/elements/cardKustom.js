@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function CardKustom() {
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
-  const [wrapStyles, setWrapStyles] = useState([]);
+  const [wrapStyles, setWrapStyles] = useState([]); // Default empty array
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const router = useRouter();
@@ -18,9 +18,10 @@ export default function CardKustom() {
           "/api/selectedType?selectedType=category&withWrapStyle=true"
         );
         const data = await response.json();
-        setCategories(data);
+        setCategories(data || []); // Default ke array kosong jika tidak ada data
       } catch (error) {
         console.error("Error fetching categories:", error);
+        setCategories([]); // Default ke array kosong jika terjadi error
       }
     };
 
@@ -30,28 +31,33 @@ export default function CardKustom() {
   // Fetch ukuran berdasarkan kategori dengan wrap style
   const handleCategorySelect = async (categoryId) => {
     setSelectedCategory(categoryId);
+    setSizes([]); // Reset sizes ketika kategori berubah
     try {
       const response = await fetch(
         `/api/selectedType?selectedType=size&category_id=${categoryId}`
       );
       const data = await response.json();
-      setSizes(data);
+      setSizes(data || []); // Default ke array kosong
     } catch (error) {
       console.error("Error fetching sizes:", error);
+      setSizes([]);
     }
   };
 
   // Fetch wrap styles berdasarkan kategori dan ukuran
   const handleSizeSelect = async (sizeId) => {
     setSelectedSize(sizeId);
+    setWrapStyles([]); // Reset wrap styles ketika ukuran berubah
     try {
       const response = await fetch(
         `/api/wrapStyle?category_id=${selectedCategory}&size_id=${sizeId}`
       );
       const data = await response.json();
-      setWrapStyles(data);
+      console.log("Wrap Styles Data:", data); // Debugging response API
+      setWrapStyles(Array.isArray(data) ? data : []); // Validasi apakah data adalah array
     } catch (error) {
       console.error("Error fetching wrap styles:", error);
+      setWrapStyles([]);
     }
   };
 
@@ -148,28 +154,32 @@ export default function CardKustom() {
             Kembali ke Pilihan Ukuran
           </button>
           <ul className="grid gap-4 grid-cols-3">
-            {wrapStyles.map((wrap) => (
-              <li
-                key={wrap.wrap_id}
-                className="relative border border-blue rounded-lg mx-auto text-center shadow-sm"
-              >
-                <button
-                  onClick={() => handleWrapSelect(wrap)}
-                  className="group block overflow-hidden rounded-lg w-full h-full relative"
+            {Array.isArray(wrapStyles) && wrapStyles.length > 0 ? (
+              wrapStyles.map((wrap) => (
+                <li
+                  key={wrap.wrap_id}
+                  className="relative border border-blue rounded-lg mx-auto text-center shadow-sm"
                 >
-                  <img
-                    src={wrap.wrap_image || "/images/placeholder.jpg"}
-                    alt={wrap.wrap_name}
-                    className="h-[250px] w-fit object-cover rounded-lg"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-                    <span className="text-white text-lg font-semibold">
-                      {wrap.wrap_name}
-                    </span>
-                  </div>
-                </button>
-              </li>
-            ))}
+                  <button
+                    onClick={() => handleWrapSelect(wrap)}
+                    className="group block overflow-hidden rounded-lg w-full h-full relative"
+                  >
+                    <img
+                      src={wrap.wrap_image || "/images/placeholder.jpg"}
+                      alt={wrap.wrap_name || "Wrap Style"}
+                      className="h-[250px] w-fit object-cover rounded-lg"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                      <span className="text-white text-lg font-semibold">
+                        {wrap.wrap_name || "Wrap Style"}
+                      </span>
+                    </div>
+                  </button>
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500">No Wrap Styles available.</p>
+            )}
           </ul>
         </div>
       )}

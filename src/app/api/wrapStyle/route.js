@@ -1,4 +1,3 @@
-// /app/api/wrapStyles/route.js
 import { getConnection } from "../../../../lib/db.js";
 import { NextResponse } from "next/server";
 
@@ -12,23 +11,23 @@ export async function GET(req) {
     let sql;
     const params = [];
 
-    // Jika `category_id` dan `size_id` diberikan, filter berdasarkan kategori dan ukuran
     if (categoryId && sizeId) {
       sql = `
-        SELECT wrap_id, wrap_image, wrap_price, flower_count
+        SELECT wrap_id, wrap_image, wrap_price
         FROM wrap_style
         WHERE category_id = ? AND size_id = ?
       `;
       params.push(categoryId, sizeId);
     } else {
-      // Jika tidak ada filter, ambil semua wrap styles
       sql = `
-        SELECT wrap_id, wrap_image, wrap_price, flower_count
+        SELECT wrap_id, wrap_image, wrap_price
         FROM wrap_style
       `;
     }
 
     const [rows] = await pool.query(sql, params);
+
+    console.log("Fetched Wrap Styles:", rows); // Debug data dari database
 
     const wrapStyles = rows.map((row) => ({
       ...row,

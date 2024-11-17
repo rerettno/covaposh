@@ -41,7 +41,6 @@ export async function POST(req) {
       ? Buffer.from(await formData.get("wrap_image").arrayBuffer())
       : null;
     data.price = parseFloat(formData.get("wrap_price") || 0);
-    data.flowerCount = parseInt(formData.get("flower_count") || 0, 10);
   } else {
     return NextResponse.json({ error: "Invalid category" }, { status: 400 });
   }
@@ -67,22 +66,22 @@ export async function POST(req) {
       params = [data.name, data.image];
     } else if (category === "wrap_style") {
       sql =
-        "INSERT INTO wrap_style (category_id, size_id, wrap_image, wrap_price, flower_count) VALUES (?, ?, ?, ?, ?)";
-      params = [
-        data.categoryId,
-        data.sizeId,
-        data.image,
-        data.price,
-        data.flowerCount,
-      ];
+        "INSERT INTO wrap_style (category_id, size_id, wrap_image, wrap_price) VALUES (?, ?, ?, ?)";
+      params = [data.categoryId, data.sizeId, data.image, data.price];
+    } else {
+      return NextResponse.json({ error: "Invalid category" }, { status: 400 });
     }
+
+    // Tambahkan Logging
+    console.log("Executing SQL:", sql);
+    console.log("With Params:", params);
 
     const [result] = await pool.execute(sql, params);
     return NextResponse.json({ message: "Data berhasil ditambahkan!", result });
   } catch (error) {
-    console.error("Database Error:", error);
+    console.error("Database Error:", error.message); // Tampilkan pesan error yang lebih spesifik
     return NextResponse.json(
-      { error: "Gagal menambahkan data" },
+      { error: `Gagal menambahkan data: ${error.message}` },
       { status: 500 }
     );
   }

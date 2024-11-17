@@ -13,6 +13,8 @@ export default function CustomizeElement({
   const [flowers, setFlowers] = useState([]);
   const [ribbons, setRibbons] = useState([]);
   const [decorations, setDecorations] = useState([]);
+  const [maxFlowers, setMaxFlowers] = useState(0); // Batas maksimum bunga
+  const [selectedFlowers, setSelectedFlowers] = useState([]); // Bunga yang sudah dipilih
 
   useEffect(() => {
     const fetchData = async (type, setData) => {
@@ -37,8 +39,18 @@ export default function CustomizeElement({
         );
         const data = await response.json();
         setWrapStyles(data);
+
+        // Set batas maksimum bunga berdasarkan size
+        const sizeResponse = await fetch(
+          `/api/selectedType?selectedType=size&category_id=${wrapData.category_id}`
+        );
+        const sizes = await sizeResponse.json();
+        const currentSize = sizes.find(
+          (size) => size.size_id === wrapData.size_id
+        );
+        setMaxFlowers(currentSize?.flower_count || 0);
       } catch (error) {
-        console.error("Error fetching wrap styles:", error);
+        console.error("Error fetching wrap styles or sizes:", error);
       }
     };
 
@@ -47,6 +59,23 @@ export default function CustomizeElement({
     fetchData("ribbon", setRibbons);
     fetchData("decoration", setDecorations);
   }, []);
+
+  // Tambah bunga ke dalam daftar
+  const handleAddFlower = (flower) => {
+    if (selectedFlowers.length < maxFlowers) {
+      const updatedFlowers = [...selectedFlowers, flower];
+      setSelectedFlowers(updatedFlowers);
+      onAddFlower(updatedFlowers); // Kirim data ke komponen induk
+    }
+  };
+  // Hapus bunga dari daftar berdasarkan urutan terakhir
+  const handleRemoveLastFlower = () => {
+    if (selectedFlowers.length > 0) {
+      const updatedFlowers = selectedFlowers.slice(0, -1); // Hapus bunga terakhir
+      setSelectedFlowers(updatedFlowers);
+      onRemoveFlower(updatedFlowers); // Kirim data ke komponen induk
+    }
+  };
 
   return (
     <div className="w-1/2 border-r border-gray-300 pr-4">
@@ -67,20 +96,47 @@ export default function CustomizeElement({
       </div>
 
       <h3 className="text-lg font-semibold mt-6">Pilih Bunga</h3>
+      <p className="text-gray-600 mb-2">
+        {selectedFlowers.length}/{maxFlowers} Bunga Dipilih
+      </p>
       <div className="flex flex-wrap gap-4">
         {flowers.map((flower) => (
           <div
             key={flower.flower_id}
-            className="p-2 border rounded-md cursor-pointer"
+            className={`p-2 border rounded-md cursor-pointer ${
+              selectedFlowers.length >= maxFlowers
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+            onClick={() => handleAddFlower(flower)}
           >
             <img
               src={flower.flower_image || "/images/placeholder.jpg"}
               className="h-16 w-16 object-cover"
               alt={flower.flower_name}
-              onClick={() => onAddFlower(flower)}
             />
           </div>
         ))}
+      </div>
+
+      <h3 className="text-lg font-semibold mt-6">Bunga yang Dipilih</h3>
+      <div className="flex flex-wrap gap-4">
+        {selectedFlowers.map((flower, index) => (
+          <div key={index} className="p-2 border rounded-md cursor-pointer">
+            <img
+              src={flower.flower_image || "/images/placeholder.jpg"}
+              className="h-16 w-16 object-cover"
+              alt={flower.flower_name}
+            />
+          </div>
+        ))}
+        <button
+          onClick={handleRemoveLastFlower}
+          className="bg-red-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
+          disabled={selectedFlowers.length === 0}
+        >
+          Hapus Bunga Terakhir
+        </button>
       </div>
 
       <h3 className="text-lg font-semibold mt-6">Pilih Ribbon</h3>

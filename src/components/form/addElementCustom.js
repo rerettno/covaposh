@@ -19,7 +19,6 @@ export default function AddElementCustom() {
     size_id: "",
     wrap_image: null,
     wrap_price: "",
-    flower_count: "",
   });
 
   // State untuk menyimpan opsi dropdown
@@ -79,13 +78,8 @@ export default function AddElementCustom() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (selectedCategory === "decoration" && !formData.decoration_image) {
-      alert("Harap unggah gambar untuk dekorasi.");
-      return;
-    }
-
     const data = new FormData();
-    data.append("selectedType", selectedCategory);
+    data.append("category", selectedCategory);
 
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== null && value !== "") {
@@ -93,8 +87,11 @@ export default function AddElementCustom() {
       }
     });
 
+    // Debug: Cetak data yang akan dikirim
+    console.log("Sending data:", Object.fromEntries(data.entries()));
+
     try {
-      const response = await fetch("/api/selectedType", {
+      const response = await fetch("/api/addElementsCustom", {
         method: "POST",
         body: data,
       });
@@ -287,14 +284,6 @@ export default function AddElementCustom() {
               type="number"
               name="wrap_price"
               value={formData.wrap_price || ""}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            />
-            <label className="block text-sm mt-3 mb-1">Flower Count</label>
-            <input
-              type="number"
-              name="flower_count"
-              value={formData.flower_count || ""}
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
