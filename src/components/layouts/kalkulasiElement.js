@@ -30,8 +30,6 @@ export default function KalkulasiElement({
   return (
     <div className="w-full text-center mt-6">
       <h3 className="text-lg font-semibold mb-4">Kalkulasi Harga</h3>
-
-      {/* Rincian harga untuk setiap elemen yang dipilih */}
       <div className="text-left mb-4">
         {selectedWrap && (
           <p>
@@ -57,7 +55,6 @@ export default function KalkulasiElement({
         )}
       </div>
 
-      {/* Total harga keseluruhan */}
       <p className="text-xl font-semibold">
         Total Harga: {calculateTotalPrice()} IDR
       </p>

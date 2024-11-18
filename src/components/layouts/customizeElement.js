@@ -11,6 +11,8 @@ export default function CustomizeElement({
 }) {
   const [wrapStyles, setWrapStyles] = useState([]);
   const [flowers, setFlowers] = useState([]);
+  const [flowerColors, setFlowerColors] = useState([]); // Warna bunga berdasarkan pilihan bunga
+  const [selectedFlower, setSelectedFlower] = useState(null); // Bunga yang dipilih dari dropdown
   const [ribbons, setRibbons] = useState([]);
   const [decorations, setDecorations] = useState([]);
   const [maxFlowers, setMaxFlowers] = useState(0); // Batas maksimum bunga
@@ -60,6 +62,20 @@ export default function CustomizeElement({
     fetchData("decoration", setDecorations);
   }, []);
 
+  // Fetch warna bunga berdasarkan bunga yang dipilih
+  const handleFlowerSelect = async (flowerId) => {
+    setSelectedFlower(flowerId);
+    try {
+      const response = await fetch(
+        `/api/getElementsCustom?type=flower_color&flower_id=${flowerId}`
+      );
+      const data = await response.json();
+      setFlowerColors(data);
+    } catch (error) {
+      console.error("Error fetching flower colors:", error);
+    }
+  };
+
   // Tambah bunga ke dalam daftar
   const handleAddFlower = (flower) => {
     if (selectedFlowers.length < maxFlowers) {
@@ -99,6 +115,7 @@ export default function CustomizeElement({
       <p className="text-gray-600 mb-2">
         {selectedFlowers.length}/{maxFlowers} Bunga Dipilih
       </p>
+
       <div className="flex flex-wrap gap-4">
         {flowers.map((flower) => (
           <div

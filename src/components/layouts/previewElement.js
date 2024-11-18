@@ -30,9 +30,6 @@ export default function PreviewElement({
             alt="Flower"
             className="w-24 h-24 mx-auto mb-2 object-cover"
           />
-          <p>{flower.flower_name}</p>
-          <p className="text-gray-600">Warna: {flower.color_name}</p>
-          <p className="text-gray-600">Harga: {flower.flower_price} IDR</p>
         </div>
       ))}
 

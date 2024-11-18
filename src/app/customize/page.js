@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import CustomizeElement from "src/components/layouts/customizeElement";
 import PreviewElement from "src/components/layouts/previewElement";
 import KalkulasiElement from "src/components/layouts/kalkulasiElement";
+
 export default function CustomizePage() {
   const [selectedWrap, setSelectedWrap] = useState(null);
   const [selectedFlowers, setSelectedFlowers] = useState([]);
@@ -16,28 +17,20 @@ export default function CustomizePage() {
   }, []);
 
   const handleWrapSelect = (wrap) => {
-    // Reset all selected elements when a new wrap style is selected
     setSelectedWrap(wrap);
-    setSelectedFlowers([]); // Reset flowers
-    setSelectedRibbon(null); // Reset ribbon
-    setSelectedDecoration(null); // Reset decoration
-    localStorage.setItem("selectedWrap", JSON.stringify(wrap));
-  };
-
-  const handleAddFlower = (flower) => {
-    if (selectedWrap && selectedFlowers.length < selectedWrap.flower_count) {
-      setSelectedFlowers((prev) => [...prev, flower]);
-    }
+    setSelectedFlowers([]); // Reset bunga saat wrap berubah
+    setSelectedRibbon(null);
+    setSelectedDecoration(null);
   };
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-4">Customize Page</h1>
-
-      <div className="flex flex-row justify-between w-full max-w-4xl">
+      <h1 className="text-2xl font-bold mb-4">Customize Buket</h1>
+      <div className="flex w-full max-w-6xl">
         <CustomizeElement
-          onSelectWrap={setSelectedWrap}
-          onAddFlower={handleAddFlower}
+          onSelectWrap={handleWrapSelect}
+          onAddFlower={setSelectedFlowers}
+          onRemoveFlower={setSelectedFlowers}
           onSelectRibbon={setSelectedRibbon}
           onSelectDecoration={setSelectedDecoration}
           selectedWrap={selectedWrap}
@@ -49,7 +42,6 @@ export default function CustomizePage() {
           selectedDecoration={selectedDecoration}
         />
       </div>
-
       <KalkulasiElement
         selectedWrap={selectedWrap}
         selectedFlowers={selectedFlowers}
