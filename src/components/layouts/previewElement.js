@@ -8,8 +8,6 @@ export default function PreviewElement({
 }) {
   return (
     <div className="w-1/2 pl-4">
-      <h3 className="text-lg font-semibold mb-4">Pratinjau Kustomisasi</h3>
-
       {selectedWrap && (
         <div className="text-center mb-6">
           <img
@@ -17,9 +15,6 @@ export default function PreviewElement({
             alt="Wrap Style"
             className="w-full max-w-md mx-auto mb-4"
           />
-          <h2 className="text-xl font-semibold">
-            Wrap: {selectedWrap.wrap_name}
-          </h2>
         </div>
       )}
 

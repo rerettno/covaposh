@@ -95,7 +95,7 @@ export default function CustomizeElement({
   };
 
   return (
-    <div className="w-1/2 border-r border-gray-300 pr-4">
+    <div className="">
       <h3 className="text-lg font-semibold mb-4">Pilih Wrap Style</h3>
       <div className="flex flex-wrap gap-4">
         {wrapStyles.map((wrap) => (

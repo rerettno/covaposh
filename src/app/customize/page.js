@@ -24,9 +24,19 @@ export default function CustomizePage() {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-4">Customize Buket</h1>
-      <div className="flex w-full max-w-6xl">
+    <div className="relative w-full min-h-screen bg-gray-100 flex justify-center items-center">
+      {/* Preview di Tengah */}
+      <div className="absolute w-full max-w-3xl z-0 flex justify-center">
+        <PreviewElement
+          selectedWrap={selectedWrap}
+          selectedFlowers={selectedFlowers}
+          selectedRibbon={selectedRibbon}
+          selectedDecoration={selectedDecoration}
+        />
+      </div>
+
+      {/* Customize di Kiri */}
+      <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-4 border border-gray-800 bg-white shadow-md rounded-lg max-h-[90vh] overflow-auto">
         <CustomizeElement
           onSelectWrap={handleWrapSelect}
           onAddFlower={setSelectedFlowers}
@@ -35,19 +45,17 @@ export default function CustomizePage() {
           onSelectDecoration={setSelectedDecoration}
           selectedWrap={selectedWrap}
         />
-        <PreviewElement
+      </div>
+
+      {/* Kalkulasi di Kanan */}
+      <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-4 bg-white shadow-md rounded-lg max-h-[90vh] overflow-auto">
+        <KalkulasiElement
           selectedWrap={selectedWrap}
           selectedFlowers={selectedFlowers}
           selectedRibbon={selectedRibbon}
           selectedDecoration={selectedDecoration}
         />
       </div>
-      <KalkulasiElement
-        selectedWrap={selectedWrap}
-        selectedFlowers={selectedFlowers}
-        selectedRibbon={selectedRibbon}
-        selectedDecoration={selectedDecoration}
-      />
     </div>
   );
 }
