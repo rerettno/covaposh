@@ -95,7 +95,7 @@ export default function CustomizeElement({
   };
 
   return (
-    <div className="">
+    <div className="w-[250px]">
       <h3 className="text-lg font-semibold mb-4">Pilih Wrap Style</h3>
       <div className="flex flex-wrap gap-4">
         {wrapStyles.map((wrap) => (
@@ -147,26 +147,24 @@ export default function CustomizeElement({
       </div>
 
       <h3 className="text-lg font-semibold mt-6">Bunga yang Dipilih</h3>
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap  ">
         {selectedFlowers.map((flower, index) => (
-          <div key={index} className="p-2 border rounded-md">
+          <div key={index} className="p-2 border border-gray-300 rounded-md ">
             <img
               src={flower.flower_image || "/images/placeholder.jpg"}
               alt={flower.color_name}
-              className="h-16 w-16 object-cover"
+              className="h-8 w-8 object-cover"
             />
-            <p className="text-sm text-center">{flower.color_name}</p>
           </div>
         ))}
+        <button
+          onClick={handleRemoveLastFlower}
+          className="bg-red-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
+          disabled={selectedFlowers.length === 0}
+        >
+          Hapus
+        </button>
       </div>
-
-      <button
-        onClick={handleRemoveLastFlower}
-        className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
-        disabled={selectedFlowers.length === 0}
-      >
-        Hapus Bunga Terakhir
-      </button>
 
       <h3 className="text-lg font-semibold mt-6">Pilih Ribbon</h3>
       <div className="flex flex-wrap gap-4">

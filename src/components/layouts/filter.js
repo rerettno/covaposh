@@ -22,7 +22,7 @@ export default function Filter({ onFilterChange }) {
 
   return (
     <div className="hidden lg:block">
-      <div className="mt-1 space-y-2">
+      <div className="mt-1 mb-1 space-y-2">
         {/* Pencarian Section */}
         <div className="relative border border-blue p-4">
           <span className="relative z-10 text-lg font-semibold tracking-wide text-darkBlue p-2">
