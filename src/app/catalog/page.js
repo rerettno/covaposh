@@ -45,7 +45,7 @@ export default function CatalogPage() {
           <AllProduct filters={filters} />
         </div>
       </div>
-      <AddElementCustom />
+      {/* <AddElementCustom /> */}
       <Footer type="custom" />
     </div>
   );

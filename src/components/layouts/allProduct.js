@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import CardProduct from "../elements/cardProduct";
 import CardKustom from "../elements/cardKustom";
 
+import { useSearchParams, useRouter } from "next/navigation";
+
 export default function AllProduct({ filters }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

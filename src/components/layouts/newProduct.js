@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import CardProduct from "../elements/cardProduct";
+import Link from "next/link";
 
 export default function NewProduct() {
   const [products, setProducts] = useState([]);
@@ -22,10 +23,20 @@ export default function NewProduct() {
   }, []);
 
   return (
-    <div className="flex flex-wrap  gap-4 justify-between">
-      {products.map((product) => (
-        <CardProduct key={product.product_id} product={product} />
-      ))}
+    <div>
+      {/* Product Cards */}
+      <div className="flex flex-wrap gap-4 justify-between">
+        {products.map((product) => (
+          <CardProduct key={product.product_id} product={product} />
+        ))}
+      </div>
+
+      {/* Centered Button */}
+      <div className="flex justify-center mt-8">
+        <button className="btn text-darkBlue bg-transparent border text-base border-blue rounded-product hover:bg-blue hover:text-white px-6 py-2">
+          <Link href="/catalog">Go to Catalog</Link>
+        </button>
+      </div>
     </div>
   );
 }

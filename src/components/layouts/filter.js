@@ -19,6 +19,10 @@ export default function Filter({ onFilterChange }) {
   const handlePriceRangeChange = (priceFilters) => {
     onFilterChange(priceFilters);
   };
+  // Fungsi untuk menangani perubahan di SizeFilter
+  const handleSizeChange = (size) => {
+    onFilterChange({ size });
+  };
 
   return (
     <div className="hidden lg:block">
@@ -73,7 +77,7 @@ export default function Filter({ onFilterChange }) {
             style={{ width: "calc(100% - 16px)" }}
           ></span>
           <div className="pt-4 w-full">
-            <SizeFilter />
+            <SizeFilter onChange={handleSizeChange} />
           </div>
         </div>
       </div>

@@ -10,6 +10,7 @@ export async function GET(req) {
   const priceFrom = parseFloat(searchParams.get("priceFrom"));
   const priceTo = parseFloat(searchParams.get("priceTo"));
   const sortBy = searchParams.get("sortBy");
+  const size = searchParams.get("size");
 
   try {
     const pool = getConnection();
@@ -40,6 +41,10 @@ export async function GET(req) {
       if (search) {
         conditions.push("p.product_name LIKE ?");
         params.push(`%${search}%`);
+      }
+      if (size) {
+        conditions.push("s.size_name =?");
+        params.push(size);
       }
       if (!isNaN(priceFrom)) {
         conditions.push("p.price >= ?");
