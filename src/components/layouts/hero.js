@@ -61,7 +61,7 @@ export default function Hero() {
             href="/catalog"
             className="text-darkBlue bg-lightBlue hover:bg-darkBlue hover:text-white rounded-lg shadow-lg text-sm px-6 py-3 flex items-center justify-center transition transform hover:scale-105"
           >
-            Go To Catalog
+            Custom Your Product
             <svg
               className="w-4 h-4 ml-2"
               xmlns="http://www.w3.org/2000/svg"
