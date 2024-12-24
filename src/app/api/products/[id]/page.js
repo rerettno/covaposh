@@ -98,7 +98,7 @@ export default function ProductPage({ params }) {
                   onClick={handleOrderClick} // Tambahkan fungsi di sini
                   className="w-full bg-darkBlue text-white font-medium py-2 md:py-3 rounded-md transition hover:bg-blue shadow-md"
                 >
-                  Pesan Sekarang
+                  Tanyakan Produk
                 </button>
               </div>
             </div>
