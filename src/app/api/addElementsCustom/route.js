@@ -1,13 +1,7 @@
 import { NextResponse } from "next/server";
 import { getConnection } from "../../../../lib/db";
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: "500kb", // Batas unggahan file maksimum 500 KB
-    },
-  },
-};
+export const sizeLimit = "500kb"; // Konfigurasi baru untuk batas ukuran unggahan file
 
 export async function POST(req) {
   const formData = await req.formData();
