@@ -67,7 +67,7 @@ export default function Footer({ type }) {
                   Ada pertanyaan? Kami siap membantu.
                 </p>
                 <a
-                  href="tel:+620123456789"
+                  href="https://api.whatsapp.com/send/?phone=6285716261499&text&type=phone_number&app_absent="
                   className="mt-4 block text-xl font-semibold text-blue-600 hover:underline"
                 >
                   +62 012 3456 789
@@ -85,23 +85,27 @@ export default function Footer({ type }) {
                 </h2>
                 <ul className="mt-4 space-y-2 text-sm text-gray-700">
                   <li>
-                    <a href="#about" className="hover:underline">
+                    <a
+                      href="https://www.instagram.com/covaposh?igsh=MWVrenJjYjFhZnZkYw==t"
+                      className="hover:underline"
+                    >
                       Tentang Kami
                     </a>
                   </li>
                   <li>
-                    <a href="#services" className="hover:underline">
-                      Layanan Kami
+                    <a
+                      href="https://goo.gl/maps/9LUSY2fA3bv9tkYH8"
+                      className="hover:underline"
+                    >
+                      Lokasi Kami
                     </a>
                   </li>
                   <li>
-                    <a href="#contact" className="hover:underline">
+                    <a
+                      href="https://api.whatsapp.com/send/?phone=6285716261499&text&type=phone_number&app_absent=0"
+                      className="hover:underline"
+                    >
                       Hubungi Kami
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#faq" className="hover:underline">
-                      FAQ
                     </a>
                   </li>
                 </ul>
@@ -112,25 +116,10 @@ export default function Footer({ type }) {
                 <h2 className="text-lg font-bold text-gray-900">Ikuti Kami</h2>
                 <div className="mt-4 flex space-x-4">
                   <a
-                    href="https://facebook.com"
+                    href="https://www.instagram.com/covaposh?igsh=MWVrenJjYjFhZnZkYw=="
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M22.675 0h-21.35C.6 0 0 .6 0 1.325v21.351C0 23.4.6 24 1.325 24h11.5v-9.294H9.691v-3.622h3.134v-2.672c0-3.1 1.895-4.785 4.66-4.785 1.325 0 2.465.1 2.794.144v3.24h-1.918c-1.504 0-1.796.715-1.796 1.762v2.31h3.592l-.468 3.622h-3.124V24h6.116C23.4 24 24 23.4 24 22.675V1.325C24 .6 23.4 0 22.675 0z" />
-                    </svg>
-                  </a>
-                  <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-pink-600 hover:text-pink-800"
+                    className=""
                   >
                     <svg
                       className="w-6 h-6"
@@ -148,8 +137,7 @@ export default function Footer({ type }) {
             {/* Footer Bottom */}
             <div className="mt-12 border-t border-gray-300 pt-6">
               <p className="text-sm text-gray-600">
-                &copy; {new Date().getFullYear()} Your Website. All rights
-                reserved.
+                &copy; {new Date().getFullYear()} Covaposh. All rights reserved.
               </p>
             </div>
           </div>
@@ -161,7 +149,10 @@ export default function Footer({ type }) {
   if (type === "custom") {
     return (
       <footer className="bg-white">
-        <div className="mx-auto max-w-screen-xl px-4 pb-8 pt-16 sm:px-6 lg:px-8 lg:pt-24">
+        <div className="bg-gradient-to-b from-white to-blue  absolute left-0 right-0 px-2 sm:px-4 lg:px-8 xl:px-14">
+          {/* Background Melengkung */}
+          <div className=" w-full h-56 from-lightBlue to-blue rounded-t-[50%] "></div>
+
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-5xl">
               Customise Your Product

@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import dotenv from "dotenv";
+dotenv.config(); // Muat file .env agar nilainya bisa digunakan
 
 const fontGlobal = localFont({
   src: "./fonts/PoltawskiNowy-Regular.otf",
