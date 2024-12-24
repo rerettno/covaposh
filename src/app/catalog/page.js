@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import AddElementCustom from "src/components/form/addElementCustom";
 import AllProduct from "src/components/layouts/allProduct";
 import Filter from "src/components/layouts/filter";
@@ -7,14 +9,26 @@ import Footer from "src/components/layouts/footer";
 import Navbar from "src/components/layouts/navbar";
 
 export default function CatalogPage() {
-  const [filters, setFilters] = useState({});
+  const searchParams = useSearchParams(); // Ambil query parameter dari URL
+  const router = useRouter();
+
+  // State untuk menyimpan filter
+  const [filters, setFilters] = useState({
+    category: searchParams.get("category") || null, // Ambil kategori dari query parameter jika ada
+  });
+
+  useEffect(() => {
+    if (filters.category) {
+      // Hapus query parameter setelah kategori diterapkan
+      router.replace("/catalog");
+    }
+  }, [filters.category, router]);
 
   const handleFilterChange = (newFilters) => {
     setFilters((prevFilters) => {
-      // Jika kategori diubah menjadi null, hapus dari filters
       const updatedFilters = { ...prevFilters, ...newFilters };
       if (updatedFilters.category === null) {
-        delete updatedFilters.category;
+        delete updatedFilters.category; // Hapus kategori jika tidak ada
       }
       return updatedFilters;
     });
