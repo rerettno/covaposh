@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { getConnection } from "../../../../lib/db";
 
-export const sizeLimit = "500kb"; // Konfigurasi baru untuk batas ukuran unggahan file
-
 export async function POST(req) {
   const formData = await req.formData();
   const category = formData.get("category"); // Kategori yang dipilih
