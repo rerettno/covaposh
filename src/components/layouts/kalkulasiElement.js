@@ -6,57 +6,63 @@ export default function KalkulasiElement({
   selectedRibbon,
   selectedDecoration,
 }) {
-  // Fungsi untuk menghitung harga total
+  // Fungsi untuk memformat harga ke format Rp
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(amount);
+  };
+
   const calculateTotalPrice = () => {
     let total = 0;
-
-    // Tambahkan harga wrap style jika ada
     total += parseFloat(selectedWrap?.wrap_price) || 0;
-
-    // Tambahkan harga setiap bunga yang dipilih
     selectedFlowers.forEach((flower) => {
       total += parseFloat(flower.flower_price) || 0;
     });
-
-    // Tambahkan harga ribbon jika ada
     total += parseFloat(selectedRibbon?.ribbon_price) || 0;
-
-    // Tambahkan harga decoration jika ada
     total += parseFloat(selectedDecoration?.decoration_price) || 0;
-
-    return total.toFixed(2); // Menampilkan hasil sebagai angka desimal
+    return total;
   };
 
   return (
-    <div className="w-full text-center mt-6">
-      <h3 className="text-lg font-semibold mb-4">Kalkulasi Harga</h3>
-      <div className="text-left mb-4">
+    <div className="w-full text-center sm:text-left mt-6">
+      <h3 className="text-lg font-semibold text-indigo-700 mb-4">
+        Kalkulasi Harga
+      </h3>
+      <div className="text-left mb-4 space-y-2">
         {selectedWrap && (
-          <p>
-            Wrap Style: {selectedWrap.wrap_name} - {selectedWrap.wrap_price} IDR
+          <p className="text-gray-600">
+            Wrap Style:{" "}
+            <span className="font-medium">{selectedWrap.wrap_name}</span> -{" "}
+            {formatCurrency(selectedWrap.wrap_price)}
           </p>
         )}
         {selectedFlowers.map((flower, index) => (
-          <p key={index}>
-            Bunga: {flower.flower_name} - {flower.flower_price} IDR
+          <p key={index} className="text-gray-600">
+            Bunga: <span className="font-medium">{flower.flower_name}</span> -{" "}
+            {formatCurrency(flower.flower_price)}
           </p>
         ))}
         {selectedRibbon && (
-          <p>
-            Ribbon: {selectedRibbon.ribbon_name} - {selectedRibbon.ribbon_price}{" "}
-            IDR
+          <p className="text-gray-600">
+            Ribbon:{" "}
+            <span className="font-medium">{selectedRibbon.ribbon_name}</span> -{" "}
+            Free
           </p>
         )}
         {selectedDecoration && (
-          <p>
-            Decoration: {selectedDecoration.decoration_name} -{" "}
-            {selectedDecoration.decoration_price} IDR
+          <p className="text-gray-600">
+            Decoration:{" "}
+            <span className="font-medium">
+              {selectedDecoration.decoration_name}
+            </span>{" "}
+            - Free
           </p>
         )}
       </div>
-
-      <p className="text-xl font-semibold">
-        Total Harga: {calculateTotalPrice()} IDR
+      <p className="text-2xl font-bold text-indigo-600">
+        Total Harga: {formatCurrency(calculateTotalPrice())}
       </p>
     </div>
   );

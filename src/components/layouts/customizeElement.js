@@ -11,14 +11,13 @@ export default function CustomizeElement({
 }) {
   const [wrapStyles, setWrapStyles] = useState([]);
   const [flowers, setFlowers] = useState([]);
-  const [flowerColors, setFlowerColors] = useState([]); // Warna bunga
-  const [selectedFlower, setSelectedFlower] = useState(null); // ID bunga dari dropdown
+  const [flowerColors, setFlowerColors] = useState([]);
+  const [selectedFlower, setSelectedFlower] = useState(null);
   const [ribbons, setRibbons] = useState([]);
   const [decorations, setDecorations] = useState([]);
-  const [maxFlowers, setMaxFlowers] = useState(0); // Batas maksimum bunga
-  const [selectedFlowers, setSelectedFlowers] = useState([]); // Bunga yang sudah dipilih
+  const [maxFlowers, setMaxFlowers] = useState(0);
+  const [selectedFlowers, setSelectedFlowers] = useState([]);
 
-  // Fetch data Wrap Styles, Flowers, Ribbons, Decorations
   useEffect(() => {
     const fetchData = async (type, setData) => {
       try {
@@ -42,7 +41,6 @@ export default function CustomizeElement({
         const data = await response.json();
         setWrapStyles(data);
 
-        // Set batas maksimum bunga berdasarkan ukuran
         const sizeResponse = await fetch(
           `/api/selectedType?selectedType=size&category_id=${wrapData.category_id}`
         );
@@ -62,7 +60,6 @@ export default function CustomizeElement({
     fetchData("decoration", setDecorations);
   }, []);
 
-  // Fetch warna bunga berdasarkan bunga yang dipilih dari dropdown
   const handleFlowerSelect = async (flowerId) => {
     setSelectedFlower(flowerId);
     try {
@@ -76,128 +73,154 @@ export default function CustomizeElement({
     }
   };
 
-  // Tambahkan bunga ke daftar
   const handleAddFlower = (flower) => {
     if (selectedFlowers.length < maxFlowers) {
       const updatedFlowers = [...selectedFlowers, flower];
       setSelectedFlowers(updatedFlowers);
-      onAddFlower(updatedFlowers); // Kirim ke komponen induk
+      onAddFlower(updatedFlowers);
     }
   };
 
-  // Hapus bunga terakhir dari daftar
   const handleRemoveLastFlower = () => {
     if (selectedFlowers.length > 0) {
-      const updatedFlowers = selectedFlowers.slice(0, -1); // Menghapus bunga terakhir
+      const updatedFlowers = selectedFlowers.slice(0, -1);
       setSelectedFlowers(updatedFlowers);
-      onRemoveFlower(updatedFlowers); // Kirim ke komponen induk
+      onRemoveFlower(updatedFlowers);
     }
   };
 
   return (
-    <div className="w-[250px]">
-      <h3 className="text-lg font-semibold mb-4">Pilih Wrap Style</h3>
-      <div className="flex flex-wrap gap-4">
-        {wrapStyles.map((wrap) => (
-          <div
-            key={wrap.wrap_id}
-            onClick={() => onSelectWrap(wrap)}
-            className="p-2 border rounded-md cursor-pointer"
-          >
-            <img
-              src={wrap.wrap_image || "/images/placeholder.jpg"}
-              alt="Wrap Style"
-              className="h-20 w-20 object-cover"
-            />
-          </div>
-        ))}
+    <div className="space-y-6">
+      {/* Wrap Style Section */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          Pilih Wrap Style
+        </h3>
+        <div className="flex flex-wrap gap-4">
+          {wrapStyles.map((wrap) => (
+            <div
+              key={wrap.wrap_id}
+              onClick={() => onSelectWrap(wrap)}
+              className="p-2 border rounded-lg shadow-lg hover:shadow-xl cursor-pointer transform transition hover:scale-105 bg-gradient-to-r from-indigo-100 via-white to-indigo-50"
+            >
+              <img
+                src={wrap.wrap_image || "/images/placeholder.jpg"}
+                alt="Wrap Style"
+                className="h-20 w-20 object-cover rounded-lg"
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
-      <h3 className="text-lg font-semibold mt-6">Pilih Bunga</h3>
-      <select
-        className="border p-2 rounded-md w-full mb-4"
-        value={selectedFlower || ""}
-        onChange={(e) => handleFlowerSelect(e.target.value)}
-      >
-        <option value="" disabled>
-          Pilih jenis bunga
-        </option>
-        {flowers.map((flower) => (
-          <option key={flower.flower_id} value={flower.flower_id}>
-            {flower.flower_name}
-          </option>
-        ))}
-      </select>
-
-      <div className="flex flex-wrap gap-4">
-        {flowerColors.map((color) => (
-          <div
-            key={color.color_id}
-            className="p-2 border rounded-md cursor-pointer"
-            onClick={() => handleAddFlower(color)}
-          >
-            <img
-              src={color.flower_image || "/images/placeholder.jpg"}
-              alt={color.color_name}
-              className="h-16 w-16 object-cover"
-            />
-            <p className="text-sm text-center">{color.color_name}</p>
-          </div>
-        ))}
-      </div>
-
-      <h3 className="text-lg font-semibold mt-6">Bunga yang Dipilih</h3>
-      <div className="flex flex-wrap  ">
-        {selectedFlowers.map((flower, index) => (
-          <div key={index} className="p-2 border border-gray-300 rounded-md ">
-            <img
-              src={flower.flower_image || "/images/placeholder.jpg"}
-              alt={flower.color_name}
-              className="h-8 w-8 object-cover"
-            />
-          </div>
-        ))}
-        <button
-          onClick={handleRemoveLastFlower}
-          className="bg-red-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
-          disabled={selectedFlowers.length === 0}
+      {/* Flower Section */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          Pilih Bunga
+        </h3>
+        <select
+          className="border p-2 rounded-md w-full mb-4 focus:ring focus:ring-indigo-300"
+          value={selectedFlower || ""}
+          onChange={(e) => handleFlowerSelect(e.target.value)}
         >
-          Hapus
-        </button>
+          <option value="" disabled>
+            Pilih jenis bunga
+          </option>
+          {flowers.map((flower) => (
+            <option key={flower.flower_id} value={flower.flower_id}>
+              {flower.flower_name}
+            </option>
+          ))}
+        </select>
+
+        <div className="flex flex-wrap gap-4">
+          {flowerColors.map((color) => (
+            <div
+              key={color.color_id}
+              onClick={() => handleAddFlower(color)}
+              className="p-2 border rounded-lg shadow-md hover:shadow-xl cursor-pointer transform transition hover:scale-105 bg-white"
+            >
+              <img
+                src={color.flower_image || "/images/placeholder.jpg"}
+                alt={color.color_name}
+                className="h-16 w-16 object-cover rounded-md"
+              />
+              <p className="text-sm text-center mt-1">{color.color_name}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <h3 className="text-lg font-semibold mt-6">Pilih Ribbon</h3>
-      <div className="flex flex-wrap gap-4">
-        {ribbons.map((ribbon) => (
-          <div
-            key={ribbon.ribbon_id}
-            onClick={() => onSelectRibbon(ribbon)}
-            className="p-2 border rounded-md cursor-pointer"
+      {/* Selected Flowers Section */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          Bunga yang Dipilih
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {selectedFlowers.map((flower, index) => (
+            <div
+              key={index}
+              className="p-2 border border-gray-300 rounded-md bg-gray-50"
+            >
+              <img
+                src={flower.flower_image || "/images/placeholder.jpg"}
+                alt={flower.color_name}
+                className="h-8 w-8 object-cover rounded-md"
+              />
+            </div>
+          ))}
+          <button
+            onClick={handleRemoveLastFlower}
+            className="bg-red-500 text-white py-2 px-4 rounded-md disabled:opacity-50"
+            disabled={selectedFlowers.length === 0}
           >
-            <img
-              src={ribbon.ribbon_image || "/images/placeholder.jpg"}
-              alt="Ribbon"
-              className="h-16 w-16 object-cover"
-            />
-          </div>
-        ))}
+            Hapus
+          </button>
+        </div>
       </div>
 
-      <h3 className="text-lg font-semibold mt-6">Pilih Dekorasi</h3>
-      <div className="flex flex-wrap gap-4">
-        {decorations.map((decoration) => (
-          <div
-            key={decoration.decoration_id}
-            onClick={() => onSelectDecoration(decoration)}
-            className="p-2 border rounded-md cursor-pointer"
-          >
-            <img
-              src={decoration.decoration_image || "/images/placeholder.jpg"}
-              alt="Decoration"
-              className="h-16 w-16 object-cover"
-            />
-          </div>
-        ))}
+      {/* Ribbon Section */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          Pilih Ribbon
+        </h3>
+        <div className="flex flex-wrap gap-4">
+          {ribbons.map((ribbon) => (
+            <div
+              key={ribbon.ribbon_id}
+              onClick={() => onSelectRibbon(ribbon)}
+              className="p-2 border rounded-lg shadow-md hover:shadow-xl cursor-pointer transform transition hover:scale-105 bg-white"
+            >
+              <img
+                src={ribbon.ribbon_image || "/images/placeholder.jpg"}
+                alt="Ribbon"
+                className="h-16 w-16 object-cover rounded-md"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Decoration Section */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          Pilih Dekorasi
+        </h3>
+        <div className="flex flex-wrap gap-4">
+          {decorations.map((decoration) => (
+            <div
+              key={decoration.decoration_id}
+              onClick={() => onSelectDecoration(decoration)}
+              className="p-2 border rounded-lg shadow-md hover:shadow-xl cursor-pointer transform transition hover:scale-105 bg-white"
+            >
+              <img
+                src={decoration.decoration_image || "/images/placeholder.jpg"}
+                alt="Decoration"
+                className="h-16 w-16 object-cover rounded-md"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
