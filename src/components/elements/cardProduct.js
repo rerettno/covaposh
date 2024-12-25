@@ -6,7 +6,7 @@ export default function CardProduct({ product }) {
   const handleClick = () => {
     router.push(`/api/products/${product.product_id}`);
   };
-
+  //tes
   return (
     <div
       onClick={handleClick}
