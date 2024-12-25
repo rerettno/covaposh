@@ -1,9 +1,8 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import CardProduct from "../elements/cardProduct";
 import CardKustom from "../elements/cardKustom";
-
-import { useSearchParams, useRouter } from "next/navigation";
 
 export default function AllProduct({ filters }) {
   const [products, setProducts] = useState([]);
@@ -14,8 +13,9 @@ export default function AllProduct({ filters }) {
   const fetchProducts = async (currentFilters) => {
     setLoading(true);
     try {
+      // Jika tidak ada filter, ambil semua produk
       const query = new URLSearchParams(currentFilters).toString();
-      const response = await fetch(`/api/products?${query}`);
+      const response = await fetch(`/api/products${query ? `?${query}` : ""}`);
       if (!response.ok) throw new Error("Failed to fetch products");
       const data = await response.json();
       setProducts(data);
@@ -28,8 +28,12 @@ export default function AllProduct({ filters }) {
 
   // Update produk saat filter atau sortBy berubah
   useEffect(() => {
-    if (filters.category === "Kustom Buket") {
-      setLoading(false); // Tidak melakukan fetching data
+    // Jika tidak ada kategori, fetch semua produk
+    if (!filters.category) {
+      fetchProducts({ sortBy }); // Hanya gunakan sorting jika tidak ada kategori
+    } else if (filters.category === "Kustom Buket") {
+      setProducts([]); // Kosongkan produk karena Kustom Buket tidak fetch dari API
+      setLoading(false);
     } else {
       fetchProducts({ ...filters, sortBy });
     }
@@ -41,18 +45,22 @@ export default function AllProduct({ filters }) {
   };
 
   if (loading) return <p>Loading...</p>;
+
   // Jika kategori adalah "Kustom Buket", tampilkan komponen CardKustom saja
   if (filters.category === "Kustom Buket") {
     return (
       <div className="overflow-y-scroll h-[calc(100vh-100px)] pt-4">
-        <CardKustom />{" "}
-        {/* CardKustom akan mengelola data dan tampilannya sendiri */}
+        <CardKustom />
       </div>
     );
   }
 
-  if (products.length === 0) return <p>No products found.</p>;
+  // Jika tidak ada produk ditemukan
+  if (products.length === 0) {
+    return <p>No products found.</p>;
+  }
 
+  // Render daftar produk
   return (
     <div>
       {/* Dropdown Sort By */}

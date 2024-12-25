@@ -84,7 +84,7 @@ export default function CardKustom() {
             {categories.map((category) => (
               <li
                 key={category.category_id}
-                className="group relative w-[250px] h-auto border border-gray-200 rounded-lg shadow-md overflow-hidden cursor-pointer"
+                className="group relative w-[180px] h-auto border border-gray-200 rounded-lg shadow-md overflow-hidden cursor-pointer"
               >
                 <button
                   onClick={() => handleCategorySelect(category.category_id)}

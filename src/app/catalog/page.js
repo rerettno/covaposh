@@ -9,26 +9,24 @@ import Footer from "src/components/layouts/footer";
 import Navbar from "src/components/layouts/navbar";
 
 export default function CatalogPage() {
-  const searchParams = useSearchParams(); // Ambil query parameter dari URL
+  const searchParams = useSearchParams();
   const router = useRouter();
 
-  // State untuk menyimpan filter
   const [filters, setFilters] = useState({
-    category: searchParams.get("category") || null, // Ambil kategori dari query parameter jika ada
+    category: searchParams.get("category") || null, // Default: kategori dari query parameter
   });
 
   useEffect(() => {
-    if (filters.category) {
-      // Hapus query parameter setelah kategori diterapkan
-      router.replace("/catalog");
+    if (filters.category && searchParams.get("category")) {
+      router.replace("/catalog"); // Hapus query parameter
     }
-  }, [filters.category, router]);
+  }, [filters.category, router, searchParams]);
 
   const handleFilterChange = (newFilters) => {
     setFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters, ...newFilters };
       if (updatedFilters.category === null) {
-        delete updatedFilters.category; // Hapus kategori jika tidak ada
+        delete updatedFilters.category; // Hapus kategori jika kosong
       }
       return updatedFilters;
     });
@@ -37,7 +35,7 @@ export default function CatalogPage() {
   return (
     <div>
       <Navbar />
-      <div className="relative mt-[50px] md:mt-[70px] h-[15px] md:h-[60px]">
+      <div className="relative mt-[70px] h-[20px] md:h-[60px]">
         <div
           className="absolute inset-0 bg-repeat-x bg-center"
           style={{
@@ -48,14 +46,17 @@ export default function CatalogPage() {
         <div className="absolute inset-0 bg-blue/50"></div>
       </div>
 
-      <div className="mt-7 flex h-[calc(100vh-50px)] gap-4">
+      <div className="mt-7 grid grid-cols-1 lg:grid-cols-5 gap-4 h-[calc(100vh-50px)]">
         {/* Sidebar filter section */}
-        <div className="w-[20%] h-full overflow-y-scroll scrollbar-hide">
-          <Filter onFilterChange={handleFilterChange} />
+        <div className="lg:col-span-1 h-full">
+          <Filter
+            onFilterChange={handleFilterChange}
+            selectedCategory={filters.category}
+          />
         </div>
 
         {/* Scrollable product section */}
-        <div className="w-[80%] h-full overflow-y-scroll scrollbar-hide">
+        <div className="lg:col-span-4 h-full overflow-y-scroll scrollbar-hide">
           <AllProduct filters={filters} />
         </div>
       </div>
