@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
+import { toPng } from "html-to-image";
 
 // Template tata letak dasar
 const baseTemplate = [
@@ -67,6 +68,22 @@ export default function PreviewElement({
   selectedRibbon,
   selectedDecoration,
 }) {
+  const previewRef = useRef();
+
+  const handleDownload = async () => {
+    if (previewRef.current) {
+      try {
+        const dataUrl = await toPng(previewRef.current, { quality: 1 });
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = "customized-bouquet.png";
+        link.click();
+      } catch (error) {
+        console.error("Error generating image:", error);
+      }
+    }
+  };
+
   const sizeMap = {
     5: "small",
     6: "medium",
@@ -78,80 +95,86 @@ export default function PreviewElement({
 
   return (
     <div className="relative w-[600px] h-screen mx-auto border">
-      {/* Wrap Style */}
-      {selectedWrap && (
-        <img
-          src={selectedWrap.wrap_image || "/images/placeholder.jpg"}
-          alt="Wrap Style"
-          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 object-cover z-0"
-        />
-      )}
-
-      {/* Flowers */}
-      {layout
-        .filter((item) => item.type === "flower")
-        .map((flowerPosition, index) => {
-          const flower = selectedFlowers[index];
-          return (
-            <div
-              key={`flower-${index}`}
-              className="absolute flex justify-center items-center text-center"
-              style={{
-                top: flowerPosition.top,
-                left: flowerPosition.left,
-                zIndex: flowerPosition.zIndex,
-                transform: "translate(-50%, -50%)", // Pastikan bunga terpusat
-              }}
-            >
-              {flower ? (
-                <img
-                  src={flower.flower_image || "/images/placeholder.jpg"}
-                  alt={`Flower ${index + 1}`}
-                  className="w-[80px] h-[80px] object-cover rounded-full"
-                />
-              ) : (
-                <span className="text-sm font-bold text-gray-500 flex justify-center items-center w-10 h-10 rounded-full border-2 border-dashed border-gray-400">
-                  {index + 1}
-                </span>
-              )}
-            </div>
-          );
-        })}
-
-      {/* Decorations */}
-      {layout
-        .filter((item) => item.type === "decoration")
-        .map(
-          (decoPosition, index) =>
-            selectedDecoration && (
+      {/* Area yang akan diambil sebagai gambar */}
+      <div ref={previewRef} className="relative w-full h-full bg-white">
+        {selectedWrap && (
+          <img
+            src={selectedWrap.wrap_image || "/images/placeholder.jpg"}
+            alt="Wrap Style"
+            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 object-cover z-0"
+          />
+        )}
+        {/* Bunga */}
+        {layout
+          .filter((item) => item.type === "flower")
+          .map((flowerPosition, index) => {
+            const flower = selectedFlowers[index];
+            return (
               <div
-                key={`decoration-${index}`}
-                className="absolute"
+                key={`flower-${index}`}
+                className="absolute flex justify-center items-center text-center"
                 style={{
-                  top: decoPosition.top,
-                  left: decoPosition.left,
-                  zIndex: decoPosition.zIndex,
+                  top: flowerPosition.top,
+                  left: flowerPosition.left,
+                  zIndex: flowerPosition.zIndex,
+                  transform: "translate(-50%, -50%)",
                 }}
               >
-                <img
-                  src={selectedDecoration.decoration_image}
-                  alt="Decoration"
-                  className="w-[100px] h-[100px] object-cover"
-                />
+                {flower ? (
+                  <img
+                    src={flower.flower_image || "/images/placeholder.jpg"}
+                    alt={`Flower ${index + 1}`}
+                    className="w-[80px] h-[80px] object-cover rounded-full"
+                  />
+                ) : (
+                  <span className="text-sm font-bold text-gray-500 flex justify-center items-center w-10 h-10 rounded-full border-2 border-dashed border-gray-400">
+                    {index + 1}
+                  </span>
+                )}
               </div>
-            )
+            );
+          })}
+        {/* Dekorasi */}
+        {layout
+          .filter((item) => item.type === "decoration")
+          .map(
+            (decoPosition, index) =>
+              selectedDecoration && (
+                <div
+                  key={`decoration-${index}`}
+                  className="absolute"
+                  style={{
+                    top: decoPosition.top,
+                    left: decoPosition.left,
+                    zIndex: decoPosition.zIndex,
+                  }}
+                >
+                  <img
+                    src={selectedDecoration.decoration_image}
+                    alt="Decoration"
+                    className="w-[100px] h-[100px] object-cover"
+                  />
+                </div>
+              )
+          )}
+        {/* Pita */}
+        {selectedRibbon && (
+          <div className="absolute bottom-[2%] left-1/2 transform -translate-x-1/2 z-10">
+            <img
+              src={selectedRibbon.ribbon_image || "/images/placeholder.jpg"}
+              alt="Ribbon"
+              className="w-1/2 h-auto object-cover rounded-md"
+            />
+          </div>
         )}
-
-      {/* Ribbon */}
-      {selectedRibbon && (
-        <div className="absolute bottom-[2%] left-1/2 transform -translate-x-1/2 z-10 flex justify-center items-center">
-          <img
-            src={selectedRibbon?.ribbon_image || "/images/placeholder.jpg"}
-            alt="Ribbon"
-            className="w-1/2 h-auto object-cover rounded-md"
-          />
-        </div>
-      )}
+      </div>
+      {/* Tombol Unduh */}
+      <button
+        onClick={handleDownload}
+        className="absolute top-4 right-4 bg-blue-500 text-black py-2 px-4 rounded-md"
+      >
+        Unduh Gambar
+      </button>
     </div>
   );
 }
