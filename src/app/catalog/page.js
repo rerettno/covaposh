@@ -8,6 +8,9 @@ import Filter from "src/components/layouts/filter";
 import Footer from "src/components/layouts/footer";
 import Navbar from "src/components/layouts/navbar";
 
+// Disable static rendering for this page
+export const dynamic = "force-dynamic";
+
 export default function CatalogPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
