@@ -61,6 +61,10 @@ export default function Filter({ onFilterChange, selectedCategory }) {
             <span className="relative z-10 text-lg font-semibold tracking-wide text-darkBlue p-2">
               Search
             </span>
+            <span
+              className="absolute top-3 h-8 right-4 bg-lightBlue"
+              style={{ width: "calc(100% - 16px)" }}
+            ></span>
             <div className="mt-2">
               <SearchFilter onChange={handleSearchChange} />
             </div>
@@ -69,6 +73,10 @@ export default function Filter({ onFilterChange, selectedCategory }) {
             <span className="relative z-10 text-lg font-semibold tracking-wide text-darkBlue px-6 py-2">
               Categories
             </span>
+            <span
+              className="absolute top-3 h-8 right-4 bg-lightBlue"
+              style={{ width: "calc(100% - 16px)" }}
+            ></span>
             <KategoriFilter
               onChange={handleCategoryChange}
               initialCategory={selectedCategory}
@@ -78,6 +86,10 @@ export default function Filter({ onFilterChange, selectedCategory }) {
             <span className="relative z-10 text-base font-semibold tracking-wide text-darkBlue p-2">
               Price
             </span>
+            <span
+              className="absolute top-3 h-8 right-4 bg-lightBlue"
+              style={{ width: "calc(100% - 16px)" }}
+            ></span>
             <div className="mt-2">
               <HargaFilter onChange={handlePriceRangeChange} />
             </div>
@@ -86,6 +98,10 @@ export default function Filter({ onFilterChange, selectedCategory }) {
             <span className="relative z-10 text-base font-semibold tracking-wide text-darkBlue p-2">
               Size
             </span>
+            <span
+              className="absolute top-3 h-8 right-4 bg-lightBlue"
+              style={{ width: "calc(100% - 16px)" }}
+            ></span>
             <div className="pt-4 w-full">
               <SizeFilter onChange={handleSizeChange} />
             </div>
