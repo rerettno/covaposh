@@ -53,12 +53,15 @@ export default function Navbar() {
               </Link>
               <span className="absolute -top-[18px] left-0 h-[100%] w-full bg-lightBlue hover:bg-transparent transform scale-0 group-hover:scale-100 transition ease-in-out duration-100  rounded-none"></span>
             </li>
-            {/* <li className="relative group">
-              <Link href="/about" className="relative z-10  hover:bg-lightBlue">
-                About
+            <li className="relative group">
+              <Link
+                href="/catalog?category=Kustom%20Buket"
+                className="relative z-10  hover:bg-lightBlue"
+              >
+                Customize
               </Link>
               <span className="absolute -top-[18px] left-0 h-[100%] w-full bg-lightBlue hover:bg-transparent transform scale-0 group-hover:scale-100 transition ease-in-out duration-100  rounded-none"></span>
-            </li> */}
+            </li>
             <li className="text-darkBlue border border-darkBlue hover:bg-darkBlue hover:text-white rounded-product ">
               <Link href="https://api.whatsapp.com/send/?phone=6285716261499&text&type=phone_number&app_absent=0">
                 Contact

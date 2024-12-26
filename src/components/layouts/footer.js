@@ -9,7 +9,7 @@ export default function Footer({ type }) {
         <div className="relative px-6 py-16 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
           {/* Teks */}
           <div className="max-w-md text-darkBlue   ">
-            <h2 className="text-2xl font-bold italic text-blue-700">
+            {/* <h2 className="text-2xl font-bold italic text-blue-700">
               Lorem Ipsum nnsandsam adna
             </h2>
             <p className="mt-4 text-darkBlue ">
@@ -17,7 +17,7 @@ export default function Footer({ type }) {
               nibh ipsum, vestibulum id laoreet ac, commodo molestie tellus.
               Nunc sitjjkhb iukjhb jhbn jhb jhb ikjhb jhbmnbjmbn jhmb jhb ubjmn
               b hjbhjbmn jh amet luctus nisi.
-            </p>
+            </p> */}
           </div>
 
           {/* Kotak Transparan (Dekorasi) */}
