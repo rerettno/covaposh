@@ -22,8 +22,8 @@ export default function Footer({ type }) {
 
           {/* Kotak Transparan (Dekorasi) */}
           <div className="relative flex mt-8 sm:mt-0   ">
-            <div className="absolute bottom-10 right-28 w-56 h-72 bg-white border border-gray-300 shadow-lg opacity-75"></div>
-            <div className=" w-40 h-48 bg-white border border-gray-300 shadow-lg opacity-50"></div>
+            {/* <div className="absolute bottom-10 right-28 w-56 h-72 bg-white border border-gray-300 shadow-lg opacity-75"></div>
+            <div className=" w-40 h-48 bg-white border border-gray-300 shadow-lg opacity-50"></div> */}
           </div>
         </div>
 
