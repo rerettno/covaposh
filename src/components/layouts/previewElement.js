@@ -94,7 +94,7 @@ export default function PreviewElement({
   const layout = generateTemplate(size);
 
   return (
-    <div className="relative w-[600px] h-auto mx-auto border">
+    <div className="relative w-[600px] h-[720px] mx-auto border">
       {/* Area yang akan diambil sebagai gambar */}
       <div ref={previewRef} className="relative w-full h-full bg-white">
         {selectedWrap && (
@@ -104,7 +104,16 @@ export default function PreviewElement({
             className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 object-cover z-0"
           />
         )}
-        {/* Bunga */}
+        {/* Wrap Style */}
+        {selectedWrap && (
+          <img
+            src={selectedWrap.wrap_image || "/images/placeholder.jpg"}
+            alt="Wrap Style"
+            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 object-cover z-0"
+          />
+        )}
+
+        {/* Flowers */}
         {layout
           .filter((item) => item.type === "flower")
           .map((flowerPosition, index) => {
@@ -117,7 +126,7 @@ export default function PreviewElement({
                   top: flowerPosition.top,
                   left: flowerPosition.left,
                   zIndex: flowerPosition.zIndex,
-                  transform: "translate(-50%, -50%)",
+                  transform: "translate(-50%, -50%)", // Pastikan bunga terpusat
                 }}
               >
                 {flower ? (
@@ -134,7 +143,8 @@ export default function PreviewElement({
               </div>
             );
           })}
-        {/* Dekorasi */}
+
+        {/* Decorations */}
         {layout
           .filter((item) => item.type === "decoration")
           .map(
@@ -157,11 +167,12 @@ export default function PreviewElement({
                 </div>
               )
           )}
-        {/* Pita */}
+
+        {/* Ribbon */}
         {selectedRibbon && (
-          <div className="absolute bottom-[2%] left-1/2 transform -translate-x-1/2 z-10">
+          <div className="absolute bottom-[2%] left-1/2 transform -translate-x-1/2 z-10 flex justify-center items-center">
             <img
-              src={selectedRibbon.ribbon_image || "/images/placeholder.jpg"}
+              src={selectedRibbon?.ribbon_image || "/images/placeholder.jpg"}
               alt="Ribbon"
               className="w-1/2 h-auto object-cover rounded-md"
             />
