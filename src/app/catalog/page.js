@@ -1,32 +1,43 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import AddElementCustom from "src/components/form/addElementCustom";
+import { useSearchParams, useRouter } from "next/navigation";
 import AllProduct from "src/components/layouts/allProduct";
 import Filter from "src/components/layouts/filter";
 import Footer from "src/components/layouts/footer";
 import Navbar from "src/components/layouts/navbar";
 
 export default function CatalogPage() {
+  const searchParams = useSearchParams(); // Untuk membaca query parameters
+  const router = useRouter(); // Untuk navigasi
   const [filters, setFilters] = useState({}); // State untuk menyimpan filter
-  const [initialCategory, setInitialCategory] = useState(null); // State untuk kategori awal dari URL
+  const [initialCategory, setInitialCategory] = useState(null); // State untuk kategori awal
 
   useEffect(() => {
-    // Ambil parameter kategori dari URL
-    const params = new URLSearchParams(window.location.search);
-    const category = params.get("category");
+    const category = searchParams.get("category"); // Ambil kategori dari query
+    const fromCustomize = searchParams.get("from") === "customize"; // Cek sumber navigasi
+
     if (category) {
       setFilters((prevFilters) => ({ ...prevFilters, category }));
       setInitialCategory(category); // Simpan kategori awal
-      // Hapus parameter dari URL
+
       window.history.replaceState({}, document.title, "/catalog");
     }
-  }, []);
+
+    if (fromCustomize) {
+      // Hapus query "from" dari URL setelah memuat
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("from");
+      router.replace(`/catalog?${params.toString()}`, undefined, {
+        shallow: true,
+      });
+    }
+  }, [searchParams, router]);
 
   const handleFilterChange = (newFilters) => {
     setFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters, ...newFilters };
-      if (updatedFilters.category === null) {
+      if (!updatedFilters.category) {
         delete updatedFilters.category; // Hapus kategori jika kosong
       }
       return updatedFilters;

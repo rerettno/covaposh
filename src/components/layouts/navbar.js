@@ -25,8 +25,11 @@ export default function Navbar() {
               <Link href="/catalog">Catalog</Link>
             </li>
             <li className="rounded-button hover:bg-lightBlue">
-              <Link href="/catalog?category=Kustom%20Buket">Customize</Link>
+              <Link href="/catalog?category=Kustom%20Buket&from=customize">
+                Customize
+              </Link>
             </li>
+
             <li className="rounded-button hover:bg-lightBlue">
               <Link href="https://api.whatsapp.com/send/?phone=6285716261499&text&type=phone_number&app_absent=0">
                 Contact Us
@@ -55,7 +58,7 @@ export default function Navbar() {
             </li>
             <li className="relative group">
               <Link
-                href="/catalog?category=Kustom%20Buket"
+                href="/catalog?category=Kustom%20Buket&from=customize"
                 className="relative z-10  hover:bg-lightBlue"
               >
                 Customize
