@@ -94,9 +94,9 @@ export default function PreviewElement({
   const layout = generateTemplate(size);
 
   return (
-    <div className="relative w-[600px] h-[720px] mx-auto border">
+    <div className="relative w-[600px] h-[720px] mx-auto ">
       {/* Area yang akan diambil sebagai gambar */}
-      <div ref={previewRef} className="relative w-full h-full bg-white">
+      <div ref={previewRef} className="relative w-full h-full bg-transparent">
         {selectedWrap && (
           <img
             src={selectedWrap.wrap_image || "/images/placeholder.jpg"}
@@ -182,7 +182,7 @@ export default function PreviewElement({
       {/* Tombol Unduh */}
       <button
         onClick={handleDownload}
-        className="absolute top-4 right-4 bg-blue-500 text-black py-2 px-4 rounded-md"
+        className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-black py-2 px-4 rounded-md"
       >
         Unduh Gambar
       </button>

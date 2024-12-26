@@ -27,9 +27,6 @@ export default function KalkulasiElement({
 
   return (
     <div className="w-full text-center sm:text-left mt-6">
-      <h3 className="text-lg font-semibold text-indigo-700 mb-4">
-        Kalkulasi Harga
-      </h3>
       <div className="text-left mb-4 space-y-2">
         {selectedWrap && (
           <p className="text-gray-600">

@@ -24,10 +24,10 @@ export default function CardProduct({ product }) {
       {/* Content Section */}
       <div className="p-2 md:p-4 flex flex-col justify-between h-fit">
         <div>
-          <h3 className="text-xs md:text-base font-semibold text-gray-800 dark:text-white truncate">
+          <h3 className="text-xs md:text-sm font-semibold text-gray-800 dark:text-white truncate">
             {product.product_name}
           </h3>
-          <p className="text-xxs text-gray-500 dark:text-gray-400 italic mt-1">
+          <p className="text-xxs md:text-xs text-gray-500 dark:text-gray-400 italic mt-1">
             {product.category_name} / {product.size_name}
           </p>
         </div>

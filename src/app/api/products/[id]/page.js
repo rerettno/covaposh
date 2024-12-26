@@ -47,11 +47,11 @@ export default function ProductPage({ params }) {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 shadow-lg rounded-lg bg-white overflow-hidden">
             {/* Gambar Produk */}
-            <div className="h-64 md:h-[500px]">
+            <div className="h-fit max-h-[600px]">
               <img
                 src={product.product_image || "/images/placeholder.jpg"}
                 alt={product.product_name}
-                className="w-full h-full object-cover"
+                className="w-full  max-h-[600px] object-cover"
               />
             </div>
 

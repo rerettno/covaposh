@@ -10,9 +10,9 @@ export default function Navbar() {
         <div className="dropdown dropdown-hover lg:hidden">
           <button
             tabIndex={0}
-            className="btn btn-ghost btn-circle w-3 sm:w-8 md:w-12 text-darkBlue rounded-product hover:bg-transparent hover:text-lightBlue"
+            className="btn btn-ghost btn-circle w-6 sm:w-8 md:w-12 text-darkBlue rounded-product hover:bg-transparent hover:text-lightBlue"
           >
-            <HiBars3BottomLeft className="w-3 h-3 sm:w-7 sm:h-7" />
+            <HiBars3BottomLeft className="w-6 h-6 sm:w-7 sm:h-7" />
           </button>
           <ul
             tabIndex={0}
@@ -25,11 +25,11 @@ export default function Navbar() {
               <Link href="/catalog">Catalog</Link>
             </li>
             <li className="rounded-button hover:bg-lightBlue">
-              <Link href="/about">About</Link>
+              <Link href="/catalog?category=Kustom%20Buket">Customize</Link>
             </li>
             <li className="rounded-button hover:bg-lightBlue">
               <Link href="https://api.whatsapp.com/send/?phone=6285716261499&text&type=phone_number&app_absent=0">
-                Contact
+                Contact Us
               </Link>
             </li>
           </ul>
@@ -64,7 +64,7 @@ export default function Navbar() {
             </li>
             <li className="text-darkBlue border border-darkBlue hover:bg-darkBlue hover:text-white rounded-product ">
               <Link href="https://api.whatsapp.com/send/?phone=6285716261499&text&type=phone_number&app_absent=0">
-                Contact
+                Contact Us
               </Link>
             </li>
           </ul>
@@ -72,7 +72,7 @@ export default function Navbar() {
       </div>
 
       {/* Navbar End */}
-      <div className="navbar-end flex flex-col items-end  ">
+      <div className="navbar-end flex flex-col items-end ">
         <a className="text-xxs sm:text-sm leading-none">Yogyakarta Bouquet</a>
         <a className="text-base sm:text-xl md:text-2xl font-semibold leading-none">
           COVAPOSH

@@ -5,14 +5,15 @@ import Link from "next/link";
 export default function Hero() {
   return (
     <section className="mt-12 md:mt-20 w-full bg-gray-100 mb-2 sm:-10 md:mb-20">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between py-12 md:py-16 gap-8">
+      <div className="relative max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between py-12 md:py-16 gap-8">
         {/* Left Side: Title & Description */}
         <div className="flex-1 text-center md:text-left space-y-6">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black leading-tight text-center">
-            Celebrate Moments with Beautiful Blooms
+          <h1 className="text-3xl sm:text-4xl  font-bold text-black leading-tight text-center">
+            Every Bouquet Tells a Story
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-black/60 text-center mt-4">
-            Fresh, handpicked flowers for every occasion.
+          <p className="text-sm sm:text-base  text-black/60 text-center mt-4">
+            Find a design that speaks to your heart or create one that’s all
+            your own.
           </p>
           <Link
             href="/catalog?category=Kustom%20Buket" // Tambahkan query parameter untuk filter
@@ -37,11 +38,11 @@ export default function Hero() {
         </div>
 
         {/* Right Side: Image */}
-        <div className="flex-1 h-72 md:h-96 relative flex items-center justify-center">
+        <div className="flex-[15%] h-72 md:h-96 relative flex items-center justify-center">
           <img
             src="/images/hero1.png"
             alt="Hero"
-            className="object-contain w-full h-full max-w-lg"
+            className="object-cover w-full h-full"
           />
         </div>
       </div>

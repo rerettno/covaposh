@@ -101,7 +101,7 @@ export default function CustomizeElement({
             <div
               key={wrap.wrap_id}
               onClick={() => onSelectWrap(wrap)}
-              className="p-2 border rounded-lg shadow-lg hover:shadow-xl cursor-pointer transform transition hover:scale-105 bg-gradient-to-r from-indigo-100 via-white to-indigo-50"
+              className="p-2 border rounded-lg shadow-lg hover:shadow-xl cursor-pointer transform transition hover:scale-105 bg-white"
             >
               <img
                 src={wrap.wrap_image || "/images/placeholder.jpg"}
