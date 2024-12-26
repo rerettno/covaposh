@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CustomizeElement from "src/components/layouts/customizeElement";
 import PreviewElement from "src/components/layouts/previewElement";
 import KalkulasiElement from "src/components/layouts/kalkulasiElement";
@@ -13,11 +13,16 @@ export default function CustomizePage() {
   const [selectedDecoration, setSelectedDecoration] = useState(null);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
   const [isKalkulasiOpen, setIsKalkulasiOpen] = useState(false);
+
+  const previewRef = useRef(); // Tambahkan useRef untuk preview
   const router = useRouter();
 
   useEffect(() => {
     const savedWrap = JSON.parse(localStorage.getItem("selectedWrap"));
-    if (savedWrap) setSelectedWrap(savedWrap);
+    if (savedWrap) {
+      console.log("Selected Wrap Data:", savedWrap); // Debugging
+      setSelectedWrap(savedWrap);
+    }
   }, []);
 
   const handleWrapSelect = (wrap) => {
@@ -91,6 +96,7 @@ export default function CustomizePage() {
             selectedFlowers={selectedFlowers}
             selectedRibbon={selectedRibbon}
             selectedDecoration={selectedDecoration}
+            ref={previewRef}
           />
         </div>
       </div>

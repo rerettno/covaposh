@@ -153,7 +153,7 @@ export default function Footer({ type }) {
           {/* Background Melengkung */}
           <div className=" w-full h-56 from-lightBlue to-blue rounded-t-[50%] "></div>
 
-          <div className="text-center">
+          {/* <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-5xl">
               Customise Your Product
             </h2>
@@ -169,7 +169,7 @@ export default function Footer({ type }) {
             >
               Get Started
             </a>
-          </div>
+          </div> */}
 
           <div className="mt-16 border-t border-gray-100 pt-8 sm:flex sm:items-center sm:justify-between lg:mt-24">
             <ul className="flex flex-wrap justify-center gap-4 text-xs lg:justify-end">

@@ -62,13 +62,25 @@ export default function CardKustom() {
 
   // Fungsi untuk memilih wrap style dan navigasi
   const handleWrapSelect = (wrap) => {
+    // Cari nama kategori berdasarkan ID
+    const category = categories.find(
+      (cat) => cat.category_id === selectedCategory
+    );
+    const size = sizes.find((sz) => sz.size_id === selectedSize);
+
+    // Gabungkan data wrap dengan nama kategori dan ukuran
     const wrapData = {
       ...wrap,
       category_id: selectedCategory,
+      category_name: category?.category_name || "Unknown Category",
       size_id: selectedSize,
+      size_name: size?.size_name || "Unknown Size",
     };
 
+    // Simpan ke localStorage
     localStorage.setItem("selectedWrap", JSON.stringify(wrapData));
+
+    // Arahkan ke halaman customize
     router.push("/customize");
   };
 
