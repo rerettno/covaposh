@@ -94,7 +94,7 @@ export default function PreviewElement({
   const layout = generateTemplate(size);
 
   return (
-    <div className="relative w-[600px] h-screen mx-auto border">
+    <div className="relative w-[600px] h-auto mx-auto border">
       {/* Area yang akan diambil sebagai gambar */}
       <div ref={previewRef} className="relative w-full h-full bg-white">
         {selectedWrap && (
