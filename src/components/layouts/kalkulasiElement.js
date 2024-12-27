@@ -19,6 +19,7 @@ export default function KalkulasiElement({
     }).format(amount);
   };
 
+  // Hitung total harga dari semua item yang dipilih
   const calculateTotalPrice = () => {
     let total = 0;
     total += parseFloat(selectedWrap?.wrap_price) || 0;
@@ -30,42 +31,51 @@ export default function KalkulasiElement({
     return total;
   };
 
-  const handleSendToWhatsApp = async () => {
-    // if (previewRef.current) {
-    //   try {
-    // Generate image from previewRef
-    //const dataUrl = await toPng(previewRef.current, { quality: 1 });
-
-    // Format pesan WhatsApp
+  const handleSendToWhatsApp = () => {
     const totalPrice = calculateTotalPrice();
     const message = `
-          Berikut detail kustomisasi Anda:
-          - Wrap: ${selectedWrap?.wrap_name || "Tidak dipilih"}
-          - Flowers: ${
-            selectedFlowers.map((f) => f.color_name).join(", ") ||
-            "Tidak dipilih"
-          }
-          - Ribbon: ${selectedRibbon?.ribbon_name || "Tidak dipilih"}
-          - Decoration: ${
-            selectedDecoration?.decoration_name || "Tidak dipilih"
-          }
-          - Total Harga: ${formatCurrency(totalPrice)}
-        `;
+Halo Kak, saya ingin melakukan pemesanan dengan detail berikut:
+    
+*Detail Kustomisasi:*
+
+- *Wrap*: ${selectedWrap?.wrap_name || "Tidak dipilih"}
+  ${
+    selectedWrap
+      ? `(Harga: ${formatCurrency(selectedWrap.wrap_price)}, Kategori: ${
+          selectedWrap.category_name || "Tidak diketahui"
+        }, Ukuran: ${selectedWrap.size_name || "Tidak diketahui"})`
+      : ""
+  }
+  
+- *Flowers*: ${
+      selectedFlowers.length > 0
+        ? selectedFlowers
+            .map(
+              (f, index) =>
+                `\n  ${index + 1}. ${f.color_name} (${formatCurrency(
+                  f.flower_price
+                )})`
+            )
+            .join("")
+        : "Tidak dipilih"
+    }
+  
+- *Ribbon*: ${selectedRibbon?.ribbon_name || "Tidak dipilih"}
+  ${selectedRibbon ? "" : ""}
+  
+- *Decoration*: ${selectedDecoration?.decoration_name || "Tidak dipilih"}
+  ${selectedDecoration ? "" : ""}
+  
+- *Total Harga*: ${formatCurrency(totalPrice)}
+
+Mohon konfirmasi untuk melanjutkan pesanan. Terima kasih! 😊
+`;
 
     const encodedMessage = encodeURIComponent(message);
-    //const encodedImage = encodeURIComponent(dataUrl);
-
-    // WhatsApp URL
     const whatsappURL = `https://wa.me/${waPhoneNumber}?text=${encodedMessage}`;
 
-    // Buka WhatsApp di tab baru
     window.open(whatsappURL, "_blank");
   };
-  // catch (error) {
-  //       console.error("Error generating image or sending to WhatsApp:", error);
-  //     }
-  //   }
-  // };
 
   return (
     <div className="w-full text-center sm:text-left mt-6">
@@ -87,7 +97,7 @@ export default function KalkulasiElement({
             <ul className="list-disc list-inside text-black/70">
               {selectedFlowers.map((flower, index) => (
                 <li key={index}>
-                  Bunga {index + 1}:{" "}
+                  Item {index + 1}:{" "}
                   <span className="font-medium">{flower.color_name}</span> -{" "}
                   {formatCurrency(flower.flower_price)}
                 </li>
@@ -120,9 +130,9 @@ export default function KalkulasiElement({
       {/* Tombol Kirim ke WhatsApp */}
       <button
         onClick={handleSendToWhatsApp}
-        className="bg-green-500 text-white py-2 px-4 rounded-md mt-4"
+        className="bg-green-500 text-white py-2 px-4 rounded-md mt-4 hover:bg-green-600"
       >
-        Kirim ke WhatsApp
+        Lanjutkan Pemesanan
       </button>
     </div>
   );
