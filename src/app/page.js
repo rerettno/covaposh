@@ -15,13 +15,25 @@ export default function Home() {
           Kategori Produk
         </div>
         <Kategori />
-        <div className="produk text-darkBlue text-lg sm:text-xl md:text-2xl font-black py-4 sm:py-8 md:py-10 text-center ">
-          Koleksi Terbaru
-        </div>
-        <NewProduct />
-      </section>
 
-      <Footer type="map" />
+        {/* Background Melengkung */}
+        <div className="bg-gradient-to-b from-white to-blue  absolute left-0 right-0 px-2 sm:px-4 lg:px-8 xl:px-14">
+          <img
+            src="/images/leaf.png"
+            alt="Leaf Decoration"
+            className="absolute left-0 w-[30%]"
+          />
+          <div className="w-full h-4 sm:h-12 md:h-36 from-lightBlue to-blue rounded-t-[50%] ">
+            {/* Daun Dekoratif */}
+          </div>
+          <div className="produk text-darkBlue text-lg sm:text-xl md:text-3xl font-black py-4 sm:py-8 md:py-12 text-center ">
+            Koleksi Terbaru
+          </div>
+          <NewProduct />
+
+          <Footer type="map" />
+        </div>
+      </section>
       {/* <AddProduct /> */}
     </div>
   );

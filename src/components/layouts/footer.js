@@ -1,10 +1,7 @@
 export default function Footer({ type }) {
   if (type === "map") {
     return (
-      <div className="bg-gradient-to-b from-white to-blue  absolute left-0 right-0 px-2 sm:px-4 lg:px-8 xl:px-14">
-        {/* Background Melengkung */}
-        <div className=" w-full h-56 from-lightBlue to-blue rounded-t-[50%] "></div>
-
+      <div className="">
         {/* Konten Footer */}
         <div className="relative px-6 py-16 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
           {/* Teks */}
@@ -28,11 +25,7 @@ export default function Footer({ type }) {
         </div>
 
         {/* Daun Dekoratif */}
-        <img
-          src="/images/leaf.png"
-          alt="Leaf Decoration"
-          className="absolute top-0 left-0 w-[30%]"
-        />
+
         <img
           src="/images/leaf2.png"
           alt="Leaf Decoration"

@@ -38,7 +38,7 @@ export default function Kategori() {
           <p className="text-red-500">Error: {error}</p>
         ) /* Tampilkan error jika terjadi */
       }
-      <div className="flex flex-row justify-between space-x-4 overflow-x-scroll lg:overflow-x-hidden scrollbar-hide py-2 mb-4 sm:mb-8 md:mb-12">
+      <div className="flex flex-row justify-between space-x-4 overflow-x-scroll lg:overflow-x-hidden scrollbar-hide py-2 mb-2 sm:mb-4 md:mb-8">
         {categories.map((category) => (
           <CardKategori
             key={category.category_id}

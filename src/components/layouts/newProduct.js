@@ -32,7 +32,7 @@ export default function NewProduct() {
       </div>
 
       {/* Centered Button */}
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
         <button className="btn text-darkBlue bg-transparent border text-base border-blue rounded-product hover:bg-blue hover:text-white px-6 py-2">
           <Link href="/catalog">Go to Catalog</Link>
         </button>
