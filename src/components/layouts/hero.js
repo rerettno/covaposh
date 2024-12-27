@@ -38,7 +38,7 @@ export default function Hero() {
         </div>
 
         {/* Right Side: Image */}
-        <div className="flex-[25%] h-72 md:h-96 relative flex items-center justify-center">
+        <div className="flex-[5%] h-72 md:h-96 relative flex items-center justify-center">
           <img
             src="/images/hero1.png"
             alt="Hero"
