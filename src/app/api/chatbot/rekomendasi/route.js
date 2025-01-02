@@ -23,17 +23,9 @@ const priceSynonyms = {
   expensive: ["mahal", "harga tinggi"],
 };
 
-// function findMatch(input, mapping) {
-//   const lowerInput = input.toLowerCase();
-//   for (const [key, synonyms] of Object.entries(mapping)) {
-//     if ([key, ...synonyms].some((syn) => lowerInput.includes(syn))) return key;
-//   }
-//   return null;
-// }
-
 export async function POST(req) {
   try {
-    const { message, offset = 0, displayedProducts = [] } = await req.json();
+    const { message, displayedProducts = [] } = await req.json();
 
     if (!message || typeof message !== "string" || message.trim() === "") {
       return new Response(
@@ -65,13 +57,13 @@ export async function POST(req) {
 
     // Query dengan filter kategori, ukuran, dan harga
     const query = `
-      SELECT 
-        p.product_id, 
-        p.product_name, 
-        p.price, 
-        p.description, 
-        p.product_image, 
-        c.category_name, 
+      SELECT
+        p.product_id,
+        p.product_name,
+        p.price,
+        p.description,
+        p.product_image,
+        c.category_name,
         s.size_name
       FROM products p
       JOIN categories c ON p.category_id = c.category_id
@@ -80,21 +72,34 @@ export async function POST(req) {
       ${matchedCategory ? "AND c.category_name = ?" : ""}
       ${matchedSize ? "AND s.size_name = ?" : ""}
       ${budget ? "AND p.price <= ?" : ""}
-      ${displayedProducts.length > 0 ? "AND p.product_id NOT IN (?)" : ""}
-      ORDER BY ${priceType === "expensive" ? "p.price DESC" : "p.price ASC"}
-      LIMIT 5 OFFSET ?;
+   
+      ORDER BY ${priceType === "expensive" ? "p.price DESC" : "p.price ASC"};
     `;
+    // ${displayedProducts.length > 0 ? "AND p.product_id NOT IN (?)" : ""}
 
     const params = [];
     if (matchedCategory) params.push(matchedCategory);
     if (matchedSize) params.push(matchedSize);
     if (budget) params.push(budget);
-    if (displayedProducts.length > 0) params.push(displayedProducts);
-    params.push(offset);
+    //   if (displayedProducts.length > 0) params.push(displayedProducts);
 
     const [rows] = await db.query(query, params);
 
-    const products = rows.map((row) => ({
+    // Reset produk jika semua produk sudah ditampilkan
+    const remainingProducts = rows.filter(
+      (row) => !displayedProducts.includes(row.product_id)
+    );
+
+    let productsToDisplay = remainingProducts;
+
+    // Jika produk habis, reset displayedProducts dan tampilkan produk dari awal
+    if (remainingProducts.length === 0) {
+      productsToDisplay = rows;
+    }
+
+    // Pilih 5 produk secara acak
+    const selectedProducts = rows.sort(() => 0.5 - Math.random()).slice(0, 5);
+    const products = selectedProducts.map((row) => ({
       product_id: row.product_id,
       product_name: row.product_name,
       price: row.price,
@@ -120,7 +125,7 @@ export async function POST(req) {
       JSON.stringify({
         reply: "Berikut produk yang kami temukan:",
         products,
-        nextOffset: offset + 5,
+        // nextOffset: offset + 5,
         displayedProducts: [
           ...displayedProducts,
           ...products.map((p) => p.product_id),

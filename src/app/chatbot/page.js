@@ -8,7 +8,7 @@ const ChatbotPage = () => {
   const [input, setInput] = useState("");
   const [currentStep, setCurrentStep] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [currentOffset, setCurrentOffset] = useState(0); // Offset untuk query
+  // const [currentOffset, setCurrentOffset] = useState(0); // Offset untuk query
   const [displayedProducts, setDisplayedProducts] = useState([]); // Produk yang sudah ditampilkan
 
   useState(() => {
@@ -41,7 +41,7 @@ Pilih salah satu perintah berikut untuk melanjutkan:
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: input,
-          offset: currentOffset,
+          // offset: currentOffset,
           displayedProducts:
             currentStep === "rekomendasi" ? displayedProducts : [],
         }),
@@ -66,11 +66,13 @@ Pilih salah satu perintah berikut untuk melanjutkan:
             content: <div className="flex flex-wrap">{productCards}</div>,
           },
         ]);
+
         setDisplayedProducts((prev) => [
           ...prev,
           ...data.products.map((p) => p.product_id),
         ]);
-        setCurrentOffset(data.nextOffset); // Perbarui offset
+      } else {
+        setDisplayedProducts([]);
       }
     } catch (error) {
       console.error("Error:", error.message);
@@ -87,7 +89,7 @@ Pilih salah satu perintah berikut untuk melanjutkan:
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Chatbot E-Catalog</h2>
-      <div className="border p-4 h-96 overflow-auto space-y-4 rounded-lg">
+      <div className="border p-4 h-screen overflow-auto space-y-4 rounded-lg">
         {messages.map((msg, idx) => (
           <div
             key={idx}
@@ -110,7 +112,7 @@ Pilih salah satu perintah berikut untuk melanjutkan:
         />
         <button
           onClick={sendMessage}
-          className="ml-2 bg-blue-500 text-white p-2 rounded"
+          className="ml-2 bg-blue-500 text-black p-2 rounded"
           disabled={loading}
         >
           {loading ? "Mengirim..." : "Kirim"}

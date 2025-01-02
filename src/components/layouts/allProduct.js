@@ -10,34 +10,43 @@ export default function AllProduct({ filters }) {
   const [sortBy, setSortBy] = useState("");
 
   // Fungsi untuk mengambil produk sesuai filter
-  const fetchProducts = async (currentFilters) => {
-    setLoading(true);
-    try {
-      // Jika tidak ada filter, ambil semua produk
-      const query = new URLSearchParams(currentFilters).toString();
-      const response = await fetch(`/api/products${query ? `?${query}` : ""}`);
-      if (!response.ok) throw new Error("Failed to fetch products");
-      const data = await response.json();
-      setProducts(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Update produk saat filter atau sortBy berubah
   useEffect(() => {
-    // Jika tidak ada kategori, fetch semua produk
-    if (!filters.category) {
-      fetchProducts({ sortBy }); // Hanya gunakan sorting jika tidak ada kategori
-    } else if (filters.category === "Kustom Buket") {
-      setProducts([]); // Kosongkan produk karena Kustom Buket tidak fetch dari API
-      setLoading(false);
-    } else {
+    const fetchProducts = async (currentFilters) => {
+      console.log("Filters sent to API:", currentFilters); // Debugging
+      setLoading(true);
+      try {
+        // Jika tidak ada filter, ambil semua produk
+        const query = new URLSearchParams(currentFilters).toString();
+        const response = await fetch(
+          `/api/products${query ? `?${query}` : ""}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch products");
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (
+      filters.category ||
+      filters.search ||
+      filters.size ||
+      filters.priceFrom ||
+      filters.priceTo
+    ) {
       fetchProducts({ ...filters, sortBy });
+    } else {
+      fetchProducts({ sortBy });
     }
   }, [filters, sortBy]);
+
+  // // Efek: Jalankan saat filter atau sortBy berubah
+  // useEffect(() => {
+  //   fetchProducts({ ...filters, sortBy }); // Gabungkan semua filter dan sortBy
+  // }, [filters, sortBy]);
 
   // Fungsi untuk menangani perubahan dropdown
   const handleSortChange = (e) => {
@@ -47,7 +56,7 @@ export default function AllProduct({ filters }) {
   if (loading) return <p>Loading...</p>;
 
   // Jika kategori adalah "Kustom Buket", tampilkan komponen CardKustom saja
-  if (filters.category === "Kustom Buket") {
+  if (filters.category === "Custom Bouquet") {
     return (
       <div className="overflow-y-scroll h-[calc(100vh-100px)] pt-4">
         <CardKustom />

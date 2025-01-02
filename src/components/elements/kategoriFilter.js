@@ -84,10 +84,10 @@ export default function KategoriFilter({ onChange, initialCategory }) {
       </li>
       <li>
         <button
-          onClick={() => handleCategorySelect("Bouquet Custom")}
-          className={getButtonClass("Bouquet Custom")}
+          onClick={() => handleCategorySelect("Custom Bouquet")}
+          className={getButtonClass("Custom Bouquet")}
         >
-          <span className="py-3 inline-block w-full">Bouquet Custom</span>
+          <span className="py-3 inline-block w-full">Custom Bouquet</span>
         </button>
       </li>
     </ul>
