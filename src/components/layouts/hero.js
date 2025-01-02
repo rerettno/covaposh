@@ -16,7 +16,7 @@ export default function Hero() {
             your own.
           </p>
           <Link
-            href="/catalog?category=Kustom%20Buket" // Tambahkan query parameter untuk filter
+            href="/catalog?category=Custom%20Bouqet" // Tambahkan query parameter untuk filter
             className="text-darkBlue bg-lightBlue hover:bg-darkBlue hover:text-white rounded-lg shadow-lg text-sm px-6 py-3 flex items-center justify-center transition transform hover:scale-105"
           >
             Custom Your Product

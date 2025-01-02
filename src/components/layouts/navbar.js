@@ -25,7 +25,7 @@ export default function Navbar() {
               <Link href="/catalog">Catalog</Link>
             </li>
             <li className="rounded-button hover:bg-lightBlue">
-              <Link href="/catalog?category=Kustom%20Buket&from=customize">
+              <Link href="/catalog?category=Custom%20Bouqet&from=customize">
                 Customize
               </Link>
             </li>
@@ -58,7 +58,7 @@ export default function Navbar() {
             </li>
             <li className="relative group">
               <Link
-                href="/catalog?category=Kustom%20Buket&from=customize"
+                href="/catalog?category=Custom%20Bouquet&from=customize"
                 className="relative z-10  hover:bg-lightBlue"
               >
                 Customize

@@ -34,31 +34,31 @@ export default function KategoriFilter({ onChange, initialCategory }) {
     <ul className="mt-1">
       <li>
         <button
-          onClick={() => handleCategorySelect("Buket Artificial")}
-          className={getButtonClass("Buket Artificial")}
+          onClick={() => handleCategorySelect("Artificial Bouquet")}
+          className={getButtonClass("Artificial Bouquet")}
         >
           <span className="border-b py-3 border-blue inline-block w-full">
-            Buket Artificial
+            Artificial Bouquet
           </span>
         </button>
       </li>
       <li>
         <button
-          onClick={() => handleCategorySelect("Buket Uang")}
-          className={getButtonClass("Buket Uang")}
+          onClick={() => handleCategorySelect("Money Bouquet")}
+          className={getButtonClass("Money Bouquet")}
         >
           <span className="border-b py-3 border-blue inline-block w-full">
-            Buket Uang
+            Money Bouquet
           </span>
         </button>
       </li>
       <li>
         <button
-          onClick={() => handleCategorySelect("Buket Balon")}
-          className={getButtonClass("Buket Balon")}
+          onClick={() => handleCategorySelect("Balloon Bouquet")}
+          className={getButtonClass("Balloon Bouquet")}
         >
           <span className="border-b py-3 border-blue inline-block w-full">
-            Buket Balon
+            Balloon Bouquet
           </span>
         </button>
       </li>
@@ -74,20 +74,20 @@ export default function KategoriFilter({ onChange, initialCategory }) {
       </li>
       <li>
         <button
-          onClick={() => handleCategorySelect("Buket Wisuda")}
-          className={getButtonClass("Buket Wisuda")}
+          onClick={() => handleCategorySelect("Graduation Bouquet")}
+          className={getButtonClass("Graduation Bouquet")}
         >
           <span className="border-b py-3 border-blue inline-block w-full">
-            Buket Wisuda
+            Graduation Bouquet
           </span>
         </button>
       </li>
       <li>
         <button
-          onClick={() => handleCategorySelect("Kustom Buket")}
-          className={getButtonClass("Kustom Buket")}
+          onClick={() => handleCategorySelect("Bouquet Custom")}
+          className={getButtonClass("Bouquet Custom")}
         >
-          <span className="py-3 inline-block w-full">Kustom Buket</span>
+          <span className="py-3 inline-block w-full">Bouquet Custom</span>
         </button>
       </li>
     </ul>
