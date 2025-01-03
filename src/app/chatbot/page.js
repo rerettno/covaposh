@@ -51,10 +51,6 @@ Pilih salah satu perintah berikut untuk melanjutkan:
 
       setMessages((prev) => [...prev, { sender: "bot", content: data.reply }]);
 
-      if (data.nextStep) {
-        setCurrentStep(data.nextStep);
-      }
-
       if (data.products && data.products.length > 0) {
         const productCards = data.products.map((product) => (
           <CardProduct key={product.product_id} product={product} />
@@ -63,7 +59,17 @@ Pilih salah satu perintah berikut untuk melanjutkan:
           ...prev,
           {
             sender: "bot",
-            content: <div className="flex flex-wrap">{productCards}</div>,
+            content: (
+              <div>
+                <p>Berikut produk yang kami temukan:</p>
+                <div className="flex flex-wrap gap-4">{productCards}</div>
+                <p>
+                  Apakah ada rekomendasi lain yang ingin dicari? Ketik{" "}
+                  <b>/tidak</b> untuk kembali ke menu utama, atau{" "}
+                  <b> sebutkan deskripsi produk lain yang ingin Anda cari.</b>
+                </p>
+              </div>
+            ),
           },
         ]);
 
@@ -71,8 +77,12 @@ Pilih salah satu perintah berikut untuk melanjutkan:
           ...prev,
           ...data.products.map((p) => p.product_id),
         ]);
-      } else {
+      }
+      if (data.nextStep === "menu_utama") {
+        setCurrentStep(null);
         setDisplayedProducts([]);
+      } else if (data.nextStep) {
+        setCurrentStep(data.nextStep);
       }
     } catch (error) {
       console.error("Error:", error.message);

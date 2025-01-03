@@ -37,12 +37,27 @@ export async function POST(req) {
     const db = await getConnection();
     const keywords = message.toLowerCase();
 
+    // // Tangani respons langsung (ya/tidak/pesan)
+    if (["/tidak"].includes(keywords)) {
+      if (keywords === "/tidak") {
+        return new Response(
+          JSON.stringify({
+            reply:
+              "Terima kasih telah menggunakan layanan kami! Anda kembali ke menu utama. Pilih: /rekomendasi, /pemesanan, atau /informasi.",
+            nextStep: "menu_utama",
+          }),
+          { status: 200 }
+        );
+      }
+    }
+
     // Pencocokan kategori, ukuran, dan harga
     const matchedCategory = findMatch(keywords, categorySynonyms);
     const matchedSize = findMatch(keywords, sizeSynonyms);
     const budgetMatch = keywords.match(/(\d+)/); // Cari angka untuk budget
     const budget = budgetMatch ? parseInt(budgetMatch[1], 10) : null;
-    const priceType = findMatch(keywords, priceSynonyms); // murah atau mahal
+    const priceType = findMatch(keywords, priceSynonyms) || "cheap";
+
     const keywordMatches = keywords
       .split(" ")
       .filter((word) => word.trim().length > 2)
@@ -132,21 +147,22 @@ export async function POST(req) {
       size_name: row.size_name,
     }));
 
-    if (products.length === 0) {
-      return new Response(
-        JSON.stringify({
-          reply: "Maaf, produk yang anda cari tidak ditemukan.",
-          products: [],
-        }),
-        { status: 200 }
-      );
-    }
+    // if (products.length === 0) {
+    //   return new Response(
+    //     JSON.stringify({
+    //       reply: "Maaf, produk yang anda cari tidak ditemukan.",
+    //       products: [],
+    //     }),
+    //     { status: 200 }
+    //   );
+    // }
 
     return new Response(
       JSON.stringify({
-        reply: "Berikut produk yang kami temukan:",
+        reply: products.length
+          ? "Berikut produk yang kami temukan:"
+          : "Maaf, saya tidak menemukan produk yang sesuai dengan pencarian Anda. Silakan coba lagi dengan kata kunci lain.",
         products,
-        // nextOffset: offset + 5,
         displayedProducts: [
           ...displayedProducts,
           ...products.map((p) => p.product_id),
