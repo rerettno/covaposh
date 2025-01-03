@@ -82,7 +82,7 @@ export async function POST(req) {
       ${matchedSize ? "AND s.size_name = ?" : ""}
       ${budget ? "AND p.price <= ?" : ""}
       ${
-        matchedCategory || matchedSize
+        matchedCategory || matchedSize || budget
           ? "" // Jangan gunakan keywordMatches jika kategori/ukuran ditemukan
           : keywordMatches.length > 0
           ? `AND (${keywordMatches
