@@ -43,18 +43,17 @@ export async function POST(req) {
     const budgetMatch = keywords.match(/(\d+)/); // Cari angka untuk budget
     const budget = budgetMatch ? parseInt(budgetMatch[1], 10) : null;
     const priceType = findMatch(keywords, priceSynonyms); // murah atau mahal
-    // const keywordMatches = keywords
-    //   .split(" ")
-    //   .filter((word) => word.trim().length > 2);
-
+    const keywordMatches = keywords
+      .split(" ")
+      .filter((word) => word.trim().length > 2)
+      .slice(0, 5);
     // Jika tidak ada kategori dan ukuran yang dikenali
     if (
       !matchedCategory &&
       !matchedSize &&
       !budget &&
-      !priceType
-      //&&
-      //     keywordMatches.length === 0
+      !priceType &&
+      keywordMatches.length === 0
     ) {
       return new Response(
         JSON.stringify({
@@ -82,27 +81,28 @@ export async function POST(req) {
       ${matchedCategory ? "AND c.category_name = ?" : ""}
       ${matchedSize ? "AND s.size_name = ?" : ""}
       ${budget ? "AND p.price <= ?" : ""}
-
+      ${
+        matchedCategory || matchedSize
+          ? "" // Jangan gunakan keywordMatches jika kategori/ukuran ditemukan
+          : keywordMatches.length > 0
+          ? `AND (${keywordMatches
+              .map(() => "(p.product_name LIKE ? OR p.description LIKE ?)")
+              .join(" OR ")})`
+          : ""
+      }
       ORDER BY ${priceType === "expensive" ? "p.price DESC" : "p.price ASC"};
     `;
-    //  ${
-    //    keywordMatches.length > 0
-    //      ? `AND (${keywordMatches
-    //          .map(() => "(p.product_name LIKE ? OR p.description LIKE ?)")
-    //          .join(" OR ")})`
-    //      : ""
-    //  }
 
     const params = [];
     if (matchedCategory) params.push(matchedCategory);
     if (matchedSize) params.push(matchedSize);
     if (budget) params.push(budget);
-    // if (keywordMatches.length > 0) {
-    //   keywordMatches.forEach((match) => {
-    //     params.push(`%${match}%`);
-    //     params.push(`%${match}%`);
-    //   });
-    // }
+    if (keywordMatches.length > 0) {
+      keywordMatches.forEach((match) => {
+        params.push(`%${match}%`);
+        params.push(`%${match}%`);
+      });
+    }
 
     const [rows] = await db.query(query, params);
 
