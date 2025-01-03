@@ -43,9 +43,19 @@ export async function POST(req) {
     const budgetMatch = keywords.match(/(\d+)/); // Cari angka untuk budget
     const budget = budgetMatch ? parseInt(budgetMatch[1], 10) : null;
     const priceType = findMatch(keywords, priceSynonyms); // murah atau mahal
+    // const keywordMatches = keywords
+    //   .split(" ")
+    //   .filter((word) => word.trim().length > 2);
 
     // Jika tidak ada kategori dan ukuran yang dikenali
-    if (!matchedCategory && !matchedSize && !budget) {
+    if (
+      !matchedCategory &&
+      !matchedSize &&
+      !budget &&
+      !priceType
+      //&&
+      //     keywordMatches.length === 0
+    ) {
       return new Response(
         JSON.stringify({
           reply:
@@ -72,16 +82,27 @@ export async function POST(req) {
       ${matchedCategory ? "AND c.category_name = ?" : ""}
       ${matchedSize ? "AND s.size_name = ?" : ""}
       ${budget ? "AND p.price <= ?" : ""}
-   
+
       ORDER BY ${priceType === "expensive" ? "p.price DESC" : "p.price ASC"};
     `;
-    // ${displayedProducts.length > 0 ? "AND p.product_id NOT IN (?)" : ""}
+    //  ${
+    //    keywordMatches.length > 0
+    //      ? `AND (${keywordMatches
+    //          .map(() => "(p.product_name LIKE ? OR p.description LIKE ?)")
+    //          .join(" OR ")})`
+    //      : ""
+    //  }
 
     const params = [];
     if (matchedCategory) params.push(matchedCategory);
     if (matchedSize) params.push(matchedSize);
     if (budget) params.push(budget);
-    //   if (displayedProducts.length > 0) params.push(displayedProducts);
+    // if (keywordMatches.length > 0) {
+    //   keywordMatches.forEach((match) => {
+    //     params.push(`%${match}%`);
+    //     params.push(`%${match}%`);
+    //   });
+    // }
 
     const [rows] = await db.query(query, params);
 
