@@ -4,9 +4,7 @@ export default function CardKategori({ category_name, category_image }) {
   const router = useRouter();
 
   const handleCategoryClick = () => {
-    // Ubah URL ke /catalog (tanpa query), lalu panggil fungsi filter
-    router.push("/catalog");
-    onCategoryChange(category_name); // Kirim nama kategori ke parent (CatalogPage)
+    router.push(`/catalog?category=${category_name}`);
   };
 
   return (
