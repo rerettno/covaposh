@@ -6,7 +6,7 @@ findMatch;
 const categorySynonyms = {
   "artificial bouquet": ["bunga palsu", "bunga"],
   "money bouquet": ["uang", "duit", "koin"],
-  "hand bouquet": ["nikahan", "pernikahan", "wedding", "nikah"],
+  "hand bouquet": ["nikahan", "pernikahan", "wedding", "nikah", "buket tangan"],
   "graduation bouquet": ["wisuda", "kelulusan", "lulus", "boneka"],
   "balloon bouquet": ["balon", "nama"],
   "custom bouquet": ["custom", "kustom"],
@@ -160,7 +160,7 @@ export async function POST(req) {
     return new Response(
       JSON.stringify({
         reply: products.length
-          ? "Berikut produk yang kami temukan:"
+          ? ""
           : "Maaf, saya tidak menemukan produk yang sesuai dengan pencarian Anda. Silakan coba lagi dengan kata kunci lain.",
         products,
         displayedProducts: [

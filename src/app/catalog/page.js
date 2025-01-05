@@ -72,7 +72,7 @@ export default function CatalogPage() {
       <div className="mt-7 grid grid-cols-1 lg:grid-cols-5 gap-4 h-[calc(100vh-50px)]">
         {/* Sidebar filter section */}
         <div className="lg:col-span-1 h-full overflow-y-scroll scrollbar-hide">
-          <Filter onFilterChange={handleCategoryChange} />
+          <Filter onFilterChange={handleFilterChange} />
         </div>
 
         {/* Scrollable product section */}

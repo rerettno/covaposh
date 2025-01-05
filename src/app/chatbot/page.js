@@ -8,9 +8,9 @@ const ChatbotPage = () => {
   const [input, setInput] = useState("");
   const [currentStep, setCurrentStep] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [currentOffset, setCurrentOffset] = useState(0); // Offset untuk query
-  const [displayedProducts, setDisplayedProducts] = useState([]); // Produk yang sudah ditampilkan
-
+  const [product, setProduct] = useState(null); // Produk yang dipilih
+  const [customProduct, setCustomProduct] = useState(null); // Pesanan kustom
+  const [displayedProducts, setDisplayedProducts] = useState([]); // Produk yang ditampilkan
   useState(() => {
     setMessages([
       {
@@ -34,6 +34,10 @@ Pilih salah satu perintah berikut untuk melanjutkan:
       const endpoint =
         currentStep === "rekomendasi"
           ? "/api/chatbot/rekomendasi"
+          : currentStep === "pesan_produk"
+          ? "/api/chatbot/pemesanan"
+          : currentStep === "pemesanan"
+          ? "/api/chatbot/pemesanan"
           : "/api/chatbot/intent";
 
       const response = await fetch(endpoint, {
@@ -41,13 +45,19 @@ Pilih salah satu perintah berikut untuk melanjutkan:
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: input,
-          // offset: currentOffset,
-          displayedProducts:
-            currentStep === "rekomendasi" ? displayedProducts : [],
+          currentStep,
+          product,
+          customProduct,
+          displayedProducts,
         }),
       });
 
       const data = await response.json();
+
+      if (data.redirectTo) {
+        window.location.href = data.redirectTo;
+        return;
+      }
 
       setMessages((prev) => [...prev, { sender: "bot", content: data.reply }]);
 
@@ -78,9 +88,35 @@ Pilih salah satu perintah berikut untuk melanjutkan:
           ...data.products.map((p) => p.product_id),
         ]);
       }
+
+      if (data.product) {
+        setProduct(data.product);
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "bot",
+            content: (
+              <div>
+                <p>Apakah ini produk yang Anda maksud?</p>
+                <CardProduct product={data.product} />
+                <p>
+                  Jika ya, ketik <b>/pesan</b> untuk melanjutkan ke pemesanan,
+                  atau ketik <b>nama produk lain</b> untuk mencoba lagi.
+                </p>
+              </div>
+            ),
+          },
+        ]);
+      }
+
+      // if (data.customProduct) {
+      //   setCustomProduct(data.customProduct);
+      // }
       if (data.nextStep === "menu_utama") {
         setCurrentStep(null);
         setDisplayedProducts([]);
+        setProduct(null);
+        setCustomProduct(null);
       } else if (data.nextStep) {
         setCurrentStep(data.nextStep);
       }

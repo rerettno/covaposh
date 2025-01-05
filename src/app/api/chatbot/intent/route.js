@@ -30,7 +30,10 @@ export async function POST(req) {
     if (lowerMessage.startsWith("/pemesanan")) {
       return new Response(
         JSON.stringify({
-          reply: "Silakan sebutkan nama produk yang ingin Anda pesan.",
+          reply: `Pilih salah satu opsi pemesanan:
+1. Pesan produk katalog
+2. Pesan kustom
+3. Rakit sendiri (custom bouquet)`,
           nextStep: "pemesanan",
         }),
         { status: 200, headers: { "Content-Type": "application/json" } }
