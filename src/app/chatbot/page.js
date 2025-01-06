@@ -90,24 +90,26 @@ Pilih salah satu perintah berikut untuk melanjutkan:
       }
 
       if (data.product) {
-        setProduct(data.product);
+        setProduct(data.product); // Simpan produk di frontend
+
         setMessages((prev) => [
           ...prev,
           {
             sender: "bot",
             content: (
               <div>
-                <p>Apakah ini produk yang Anda maksud?</p>
                 <CardProduct product={data.product} />
                 <p>
-                  Jika ya, ketik <b>/pesan</b> untuk melanjutkan ke pemesanan,
-                  atau ketik <b>nama produk lain</b> untuk mencoba lagi.
+                  Ketik <b>/pesan</b> untuk melanjutkan atau ketik nama produk
+                  lain untuk mengganti pilihan Anda.
                 </p>
               </div>
             ),
           },
         ]);
       }
+
+      if (data.currentStep) setCurrentStep(data.currentStep); // Perbarui langkah
 
       // if (data.customProduct) {
       //   setCustomProduct(data.customProduct);
