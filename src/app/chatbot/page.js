@@ -8,9 +8,10 @@ const ChatbotPage = () => {
   const [input, setInput] = useState("");
   const [currentStep, setCurrentStep] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [product, setProduct] = useState(null); // Produk yang dipilih
-  const [customProduct, setCustomProduct] = useState(null); // Pesanan kustom
-  const [displayedProducts, setDisplayedProducts] = useState([]); // Produk yang ditampilkan
+  const [product, setProduct] = useState(null);
+  const [customProduct, setCustomProduct] = useState(null);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
+
   useState(() => {
     setMessages([
       {
@@ -75,7 +76,7 @@ Pilih salah satu perintah berikut untuk melanjutkan:
                 <p>
                   Apakah ada rekomendasi lain yang ingin dicari? Ketik{" "}
                   <b>/tidak</b> untuk kembali ke menu utama, atau{" "}
-                  <b> sebutkan deskripsi produk lain yang ingin Anda cari.</b>
+                  <b>sebutkan deskripsi produk lain yang ingin Anda cari.</b>
                 </p>
               </div>
             ),
@@ -89,7 +90,7 @@ Pilih salah satu perintah berikut untuk melanjutkan:
       }
 
       if (data.product) {
-        setProduct(data.product); // Simpan produk di frontend
+        setProduct(data.product);
 
         setMessages((prev) => [
           ...prev,
@@ -108,11 +109,8 @@ Pilih salah satu perintah berikut untuk melanjutkan:
         ]);
       }
 
-      if (data.currentStep) setCurrentStep(data.currentStep); // Perbarui langkah
+      if (data.currentStep) setCurrentStep(data.currentStep);
 
-      // if (data.customProduct) {
-      //   setCustomProduct(data.customProduct);
-      // }
       if (data.nextStep === "menu_utama") {
         setCurrentStep(null);
         setDisplayedProducts([]);
@@ -134,32 +132,38 @@ Pilih salah satu perintah berikut untuk melanjutkan:
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Chatbot E-Catalog</h2>
-      <div className="border p-4 h-screen overflow-auto space-y-4 rounded-lg">
+    <div className="min-h-screen  flex flex-col p-6">
+      <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
+        Chatbot E-Catalog
+      </h2>
+      <div className="bg-white shadow-lg rounded-lg p-6 mb-4 flex-grow overflow-auto">
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={msg.sender === "user" ? "text-right" : "text-left"}
+            className={`my-2 p-4 rounded-lg ${
+              msg.sender === "user"
+                ? "bg-blue text-black ml-auto max-w-xs"
+                : "bg-lightBlue text-gray-800 mr-auto max-w-full"
+            }`}
           >
-            <p className="font-bold">
+            <p className="font-semibold mb-2">
               {msg.sender === "user" ? "Anda" : "Bot"}:
             </p>
-            <p>{msg.content}</p>
+            <div>{msg.content}</div>
           </div>
         ))}
       </div>
-      <div className="flex mt-4">
+      <div className="flex items-center">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Tulis pesan Anda..."
-          className="flex-1 border rounded p-2"
+          className="flex-1 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring focus:ring-blue-300"
         />
         <button
           onClick={sendMessage}
-          className="ml-2 bg-blue-500 text-black p-2 rounded"
+          className="ml-4 bg-blue text-black p-3 rounded-lg hover:bg-darkBlue transition"
           disabled={loading}
         >
           {loading ? "Mengirim..." : "Kirim"}

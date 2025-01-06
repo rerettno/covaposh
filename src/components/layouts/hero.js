@@ -8,34 +8,58 @@ export default function Hero() {
       <div className="relative max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between py-12 md:py-16 gap-8">
         {/* Left Side: Title & Description */}
         <div className="flex-1 text-center md:text-left space-y-6">
-          <h1 className="text-3xl sm:text-4xl  font-bold text-black leading-tight text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold text-black leading-tight text-center">
             Every Bouquet Tells a Story
           </h1>
-          <p className="text-sm sm:text-base  text-black/60 text-center mt-4">
+          <p className="text-sm sm:text-base text-black/60 text-center mt-4">
             Find a design that speaks to your heart or create one that’s all
             your own.
           </p>
 
-          <Link
-            href="/catalog?category=Custom%20Bouquet" // Tambahkan query parameter untuk filter
-            className="text-darkBlue bg-lightBlue hover:bg-darkBlue hover:text-white rounded-lg shadow-lg text-sm px-6 py-3 flex items-center justify-center transition transform hover:scale-105"
-          >
-            Custom Your Product
-            <svg
-              className="w-4 h-4 ml-2"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
+          <div className="flex flex-col sm:flex-row gap-4 justify-center ">
+            <Link
+              href="/catalog?category=Custom%20Bouquet" // Tambahkan query parameter untuk filter
+              className="text-darkBlue bg-lightBlue hover:bg-darkBlue hover:text-white rounded-lg shadow-lg text-sm px-6 py-3 flex items-center justify-center transition transform hover:scale-105"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </Link>
+              Custom Your Product
+              <svg
+                className="w-4 h-4 ml-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </Link>
+
+            {/* Chatbot Button */}
+            <Link
+              href="/chatbot"
+              className="text-white bg-green-500 hover:bg-green-600 rounded-lg shadow-lg text-sm px-6 py-3 flex items-center justify-center transition transform hover:scale-105"
+            >
+              Use Our Chatbot
+              <svg
+                className="w-4 h-4 ml-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </Link>
+          </div>
         </div>
 
         {/* Right Side: Image */}
