@@ -160,7 +160,7 @@ export async function POST(req) {
     return new Response(
       JSON.stringify({
         reply: products.length
-          ? ""
+          ? "Berikut produk yang kami temukan:"
           : "Maaf, saya tidak menemukan produk yang sesuai dengan pencarian Anda. Silakan coba lagi dengan kata kunci lain.",
         products,
         displayedProducts: [

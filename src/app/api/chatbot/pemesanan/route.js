@@ -20,6 +20,7 @@ export async function POST(req) {
 
     const db = await getConnection();
     const keywords = message.toLowerCase();
+    const waPhoneNumber = "6285716261499"; // Nomor WhatsApp tujuan
 
     // Pilihan awal pemesanan
     if (currentStep === "pemesanan") {
@@ -206,37 +207,101 @@ export async function POST(req) {
       // Masukkan request tambahan
       if (tempOrder.step === "input_request") {
         tempOrder.request = message || "Tidak ada request tambahan";
-
-        // Simpan ke database
-        const query = `
-        INSERT INTO orders (product_id, recipient_name, phone_number, delivery_type, delivery_address, greeting_card, request, price)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-      `;
-        const values = [
-          tempOrder.product_id,
-          tempOrder.recipient_name,
-          tempOrder.phone_number,
-          tempOrder.delivery_type,
-          tempOrder.delivery_address,
-          tempOrder.greeting_card,
-          tempOrder.request,
-          tempOrder.price,
-        ];
-
-        await db.query(query, values);
-
-        const completedOrder = { ...tempOrder };
-        tempOrder = {};
+        tempOrder.step = "confirm_order";
+        const orderDetails = `
+Detail Pesanan:
+- Nama Penerima: ${tempOrder.recipient_name}
+- Produk: ${tempOrder.product_name}
+- Harga: Rp ${tempOrder.price}
+- Jenis Pengiriman: ${tempOrder.delivery_type}
+- Alamat: ${tempOrder.delivery_address || "Tidak ada"}
+- Kartu Ucapan: ${tempOrder.greeting_card}
+- Request Tambahan: ${tempOrder.request}
+      `.trim();
 
         return new Response(
           JSON.stringify({
-            reply: `Pesanan Anda berhasil dibuat!\n
+            reply: `Berikut detail pesanan Anda:\n${orderDetails}\n\nKetik "edit" untuk mengubah detail atau "konfirmasi" untuk melanjutkan ke pembayaran.`,
+          }),
+          { status: 200 }
+        );
+      }
+
+      // Konfirmasi atau Edit Pesanan
+      if (tempOrder.step === "confirm_order") {
+        if (keywords === "edit") {
+          tempOrder.step = "input_name"; // Kembali ke input nama
+          return new Response(
+            JSON.stringify({
+              reply: "Silakan masukkan nama penerima:",
+            }),
+            { status: 200 }
+          );
+        }
+
+        if (keywords === "konfirmasi") {
+          // Simpan ke database
+          const query = `
+        INSERT INTO orders (product_id, recipient_name, phone_number, delivery_type, delivery_address, greeting_card, request, price)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+      `;
+          const values = [
+            tempOrder.product_id,
+            tempOrder.recipient_name,
+            tempOrder.phone_number,
+            tempOrder.delivery_type,
+            tempOrder.delivery_address,
+            tempOrder.greeting_card,
+            tempOrder.request,
+            tempOrder.price,
+          ];
+
+          await db.query(query, values);
+
+          //           const waMessage = `
+          // Pesanan Anda telah berhasil dikonfirmasi!
+          // Detail Pesanan:
+          // - Nama Penerima: ${tempOrder.recipient_name}
+          // - Produk: ${tempOrder.product_name}
+          // - Harga: Rp ${tempOrder.price}
+          // - Jenis Pengiriman: ${tempOrder.delivery_type}
+          // - Alamat: ${tempOrder.delivery_address || "Tidak ada"}
+          // - Kartu Ucapan: ${tempOrder.greeting_card}
+          // - Request Tambahan: ${tempOrder.request}.
+          //         `.trim();
+
+          // const whatsappURL = `https://wa.me/${waPhoneNumber}?text=${waMessage}`;
+          tempOrder.step = "pembayaran";
+          return new Response(
+            JSON.stringify({
+              reply: `Pesanan Anda berhasil dibuat! Ketik /pembayaran untuk melanjutkan ke pembayaran.`,
+            }),
+            { status: 200 }
+          );
+        }
+      }
+      // Penanganan keyword "/pembayaran"
+      if (tempOrder.step === "pembayaran" && keywords === "/pembayaran") {
+        const waMessage = encodeURIComponent(
+          `
+Pesanan Anda telah berhasil dikonfirmasi!
 Detail Pesanan:
-- Nama Penerima: ${completedOrder.recipient_name}
-- Produk: ${completedOrder.product_name}
-- Harga: Rp ${completedOrder.price}
-- Jenis Pengiriman: ${completedOrder.delivery_type}
-Silakan lanjutkan pembayaran melalui WhatsApp: https://wa.me/081234567890.`,
+- Nama Penerima: ${tempOrder.recipient_name}
+- Produk: ${tempOrder.product_name}
+- Harga: Rp ${tempOrder.price}
+- Jenis Pengiriman: ${tempOrder.delivery_type}
+- Alamat: ${tempOrder.delivery_address || "Tidak ada"}
+- Kartu Ucapan: ${tempOrder.greeting_card}
+- Request Tambahan: ${tempOrder.request}.
+          `.trim()
+        );
+
+        const whatsappURL = `https://wa.me/${waPhoneNumber}?text=${waMessage}`;
+        tempOrder = {}; // Reset tempOrder setelah pembayaran
+        return new Response(
+          JSON.stringify({
+            reply: "Anda diarahkan ke halaman pembayaran.",
+            redirectTo: whatsappURL, // Redirect pengguna ke WhatsApp
           }),
           { status: 200 }
         );

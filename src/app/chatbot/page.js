@@ -71,7 +71,6 @@ Pilih salah satu perintah berikut untuk melanjutkan:
             sender: "bot",
             content: (
               <div>
-                <p>Berikut produk yang kami temukan:</p>
                 <div className="flex flex-wrap gap-4">{productCards}</div>
                 <p>
                   Apakah ada rekomendasi lain yang ingin dicari? Ketik{" "}
