@@ -37,11 +37,13 @@ export async function POST(req) {
       if (keywords === "2") {
         return new Response(
           JSON.stringify({
-            reply: `Silakan isi format berikut untuk membuat pesanan kustom:
-1. Jenis Buket (contoh: bunga/snack/uang):
-2. Budget:
-3. Request tambahan (opsional):`,
-            currentStep: "pesan_kustom",
+            //             reply: `Silakan isi format berikut untuk membuat pesanan kustom:
+            // 1. Jenis Buket (contoh: bunga/snack/uang):
+            // 2. Budget:
+            // 3. Request tambahan (opsional):`,
+            // currentStep: "pesan_kustom",
+            reply: `mohon maaf, pemesanan kustom belum tersedia! Anda kembali ke menu utama. Pilih: /rekomendasi, /pemesanan, atau /informasi`,
+            nextStep: "menu_utama",
           }),
           { status: 200 }
         );
@@ -57,6 +59,7 @@ export async function POST(req) {
       }
     }
 
+    //keyword 1
     // Pencarian produk
     if (currentStep === "pesan_produk") {
       if (keywords === "/catalog") {

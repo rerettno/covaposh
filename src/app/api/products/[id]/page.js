@@ -32,12 +32,21 @@ export default function ProductPage({ params }) {
   }
 
   // Fungsi untuk mengarahkan ke WhatsApp dengan pesan otomatis
+  // const handleOrderClick = () => {
+  //   const waMessage = `Halo, saya tertarik dengan produk ${product.product_name}. Apakah produk ini masih tersedia?`;
+  //   const waLink = `https://wa.me/${waPhoneNumber}?text=${encodeURIComponent(
+  //     waMessage
+  //   )}`;
+  //   window.open(waLink, "_blank"); // Buka tautan di tab baru
+  // };
   const handleOrderClick = () => {
-    const waMessage = `Halo, saya tertarik dengan produk ${product.product_name}. Apakah produk ini masih tersedia?`;
-    const waLink = `https://wa.me/${waPhoneNumber}?text=${encodeURIComponent(
-      waMessage
-    )}`;
-    window.open(waLink, "_blank"); // Buka tautan di tab baru
+    if (!product) return;
+
+    // Simpan detail produk ke localStorage
+    localStorage.setItem("selectedProduct", JSON.stringify(product));
+
+    // Redirect ke chatbot
+    router.push("/chatbot?from=product-detail");
   };
 
   return (
@@ -98,7 +107,7 @@ export default function ProductPage({ params }) {
                   onClick={handleOrderClick} // Tambahkan fungsi di sini
                   className="w-full bg-darkBlue text-white font-medium py-2 md:py-3 rounded-md transition hover:bg-blue shadow-md"
                 >
-                  Tanyakan Produk
+                  Pesan Sekarang
                 </button>
               </div>
             </div>

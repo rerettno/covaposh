@@ -77,6 +77,34 @@ Mohon konfirmasi untuk melanjutkan pesanan. Terima kasih! 😊
     window.open(whatsappURL, "_blank");
   };
 
+  const handleSendToChatbot = () => {
+    const totalPrice = calculateTotalPrice();
+
+    const customProduct = {
+      product_name: "Custom Bouquet",
+      price: totalPrice,
+      description: `
+- Wrap: ${selectedWrap?.wrap_name || "Tidak dipilih"}
+- Flowers: ${
+        selectedFlowers.length > 0
+          ? selectedFlowers.map((f) => f.color_name).join(", ")
+          : "Tidak dipilih"
+      }
+- Ribbon: ${selectedRibbon?.ribbon_name || "Tidak dipilih"}
+- Decoration: ${selectedDecoration?.decoration_name || "Tidak dipilih"}
+    `,
+      product_image: null,
+      category_name: selectedWrap?.category_name || "Custom",
+      size_name: selectedWrap?.size_name || "-",
+    };
+
+    // Simpan data ke localStorage
+    localStorage.setItem("customProduct", JSON.stringify(customProduct));
+
+    // Redirect ke chatbot
+    window.location.href = "/chatbot?from=customize";
+  };
+
   return (
     <div className="w-full text-center sm:text-left mt-6">
       <div className="text-left mb-4 space-y-2 bullet">
@@ -129,7 +157,8 @@ Mohon konfirmasi untuk melanjutkan pesanan. Terima kasih! 😊
 
       {/* Tombol Kirim ke WhatsApp */}
       <button
-        onClick={handleSendToWhatsApp}
+        // onClick={handleSendToWhatsApp}
+        onClick={handleSendToChatbot}
         className="bg-green-500 text-white py-2 px-4 rounded-md mt-4 hover:bg-green-600"
       >
         Lanjutkan Pemesanan

@@ -80,7 +80,7 @@ export default function CatalogPage() {
           <AllProduct filters={filters} />
         </div>
       </div>
-      <AddElementCustom />
+      {/* <AddElementCustom /> */}
       {/* Footer */}
       <Footer type="custom" />
     </div>
